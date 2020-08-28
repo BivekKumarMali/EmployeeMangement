@@ -7,48 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
+using EmployeeMangement.Web.Repository;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeController(AppDbContext context)
+        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository)
         {
             _context = context;
+            _employeeRepository = employeeRepository;
         }
 
-        // GET: Employee
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Employees.Include(e => e.Department);
-            return View(await appDbContext.ToListAsync());
+            return View(await _employeeRepository.GetAllEmployees());
         }
 
-        // GET: Employee/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var employee = await _context.Employees
-                .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.Eid == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-
-            return View(employee);
-        }
-
-        // GET: Employee/Create
         public IActionResult Create()
         {
-            ViewData["DepartmentName"] = new SelectList(_context.Departments, "Did", "DepartmentName");
+            ViewData["DepartmentName"] = _employeeRepository.DepartmentListName();
             return View();
         }
 
@@ -61,11 +43,10 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(employee);
-                await _context.SaveChangesAsync();
+                _employeeRepository.AddEmployee(employee);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Did"] = new SelectList(_context.Departments, "Did", "Did", employee.Did);
+            ViewData["Did"] = _employeeRepository.DepartmentListId(employee.Did);
             return View(employee);
         }
 
@@ -82,7 +63,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepartmentName"] = new SelectList(_context.Departments, "Did", "DepartmentName", employee.Did);
+            ViewData["DepartmentName"] = _employeeRepository.DepartmentListName(employee.Did);
             return View(employee);
         }
 
@@ -91,7 +72,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
+        public IActionResult Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
         {
             if (id != employee.Eid)
             {
@@ -102,8 +83,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             {
                 try
                 {
-                    _context.Update(employee);
-                    await _context.SaveChangesAsync();
+                    _employeeRepository.UpdateEmployee(employee);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,39 +98,13 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Did"] = new SelectList(_context.Departments, "Did", "Did", employee.Did);
+            ViewData["Did"] = _employeeRepository.DepartmentListId(employee.Did);
             return View(employee);
         }
 
-        // GET: Employee/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var employee = await _context.Employees
-                .Include(e => e.Department)
-                .FirstOrDefaultAsync(m => m.Eid == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        // POST: Employee/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var employee = await _context.Employees.FindAsync(id);
-            _context.Employees.Remove(employee);
-            await _context.SaveChangesAsync();
+            _employeeRepository.DeleteEmployee(id);
             return RedirectToAction(nameof(Index));
         }
 

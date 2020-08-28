@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Web.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +9,17 @@ namespace EmployeeMangement.Web.Repository
 {
     public interface IEmployeeRepository
     {
-        IEnumerable<Employee> GetEmployees();
-        Employee GetEmployeeByID(int Eid);
-        void InsertEmployee(Employee employee);
-        void DeleteEmployee(int Eid);
-        void UpdateEmployee(Employee employee);
 
-        Department GetDepartment(int Did);
-        bool CheckDepartmentExist(int Did);
+        Task<IEnumerable<Employee>> GetAllEmployees();
+        Task<Employee> GetEmployeeById(int id);
+        SelectList DepartmentListName();
+        SelectList DepartmentListName(int id);
+        SelectList DepartmentListId(int id);
+
+        void AddEmployee(Employee Employee);
+        void UpdateEmployee(Employee Employee);
+        void DeleteEmployee(int id);
+
+        void SaveEmployee();
     }
 }

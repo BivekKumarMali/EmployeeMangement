@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,67 +12,58 @@ namespace EmployeeMangement.Web.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private AppDbContext _context;
-        private List<Department> _departments;
 
         public EmployeeRepository(AppDbContext context)
         {
             _context = context;
-            _departments = context.Departments.ToList();
         }
 
-
-        public IEnumerable<Employee> GetEmployees()
+        public async Task<IEnumerable<Employee>> GetAllEmployees()
         {
-            List<Employee> employees = _context.Employees.ToList();
-            foreach (Employee employee in employees){
-                if (CheckDepartmentExist(employee.Did))
-                {
-                    employee.Department = GetDepartment(employee.Did);
-                }
-                else
-                {
-                    employees.Remove(employee);
-                }
-            }
-            return employees;
+            var joinDbContext = _context.Employees.Include(e => e.Department);
+            return await joinDbContext.ToListAsync();
         }
-
-
-        public Employee GetEmployeeByID(int Eid)
+        public async Task<Employee> GetEmployeeById(int Did)
         {
-            Employee employee = _context.Employees.Find(Eid);
-            employee.Department = GetDepartment(employee.Did);
-            return employee;
+            return await _context.Employees.FindAsync(Did);
         }
 
-        public void DeleteEmployee(int Eid)
+
+        public async void AddEmployee(Employee Employee)
         {
-            Employee employee = GetEmployeeByID(Eid);
-            _context.Employees.Remove(employee);
-            _context.SaveChanges();
+            await _context.Employees.AddAsync(Employee);
+            SaveEmployee();
+        }
+        public async void UpdateEmployee(Employee Employee)
+        {
+            _context.Update(Employee);
+            SaveEmployee();
+        }
+        public async void DeleteEmployee(int id)
+        {
+            Employee Employee = await GetEmployeeById(id);
+            _context.Employees.Remove(Employee);
+            SaveEmployee();
         }
 
-        public void InsertEmployee(Employee employee)
+        public SelectList DepartmentListName()
         {
-            _context.Employees.Add(employee);
-            _context.SaveChanges();
+            return new SelectList(_context.Departments, "Did", "DepartmentName");
+        }
+        public SelectList DepartmentListName(int id)
+        {
+            return new SelectList(_context.Departments, "Did", "DepartmentName", id);
+        }
+        public SelectList DepartmentListId(int id)
+        {
+            return new SelectList(_context.Departments, "Did", "Did", id);
         }
 
-        public void UpdateEmployee(Employee employee)
+        public async void SaveEmployee()
         {
-            _context.Entry(employee).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public Department GetDepartment(int Did)
-        {
-            return _departments.Find(x => x.Did == Did);
-        }
-
-        public bool CheckDepartmentExist(int Did)
-        {
-            return _departments.Exists(x => x.Did == Did);
-        }
 
     }
 }
