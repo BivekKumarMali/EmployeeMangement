@@ -26,88 +26,40 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         }
 
         // GET: Department
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _departmentViewModel.Departments = _departmentRepository.GetDepartments();
-            if(_departmentViewModel.Department == null)
-            _departmentViewModel.Department = _departmentRepository.Reset();
-            ViewBag.Message = "working";
+            _departmentViewModel.Departments = await _departmentRepository.GetAllDepartments();
+            _departmentViewModel.Department = _departmentRepository.ResetDepartment();
             return View(_departmentViewModel);
-        }
-
-        public void Reset()
-        {
-            _departmentRepository.Reset();
         }
 
         public IActionResult Add([Bind("Did,DepartmentName")] Department department)
         {
             if(department.Did == 0)
             {
-                    Insert(department);
+                _departmentRepository.AddDepartment(department);
             }
             else
             {
                 if (DepartmentExists(department.Did))
                 {
-                    Insert(department);
+                    _departmentRepository.UpdateDepartment(department);
+                }
+                else
+                {
+                    _departmentRepository.AddDepartment(department);
                 }
             }
             return RedirectToAction(nameof(Index));
         }
-        public void Insert(Department department)
-        {
-            _departmentRepository.InsertDepartment(department);
-        }
-        [HttpGet("Department/Edit/{id}")]
-        public ActionResult Edit(int id)
-        {
-            _departmentViewModel.Department = _departmentRepository.GetDepartmentByID(id);
 
-            return View(_departmentViewModel.Department);
-        }
-
-        // POST: Department/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Did,DepartmentName")] Department department)
-        {
-            if (id != department.Did)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(department);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!DepartmentExists(department.Did))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(department);
-        }
-
+        
         public IActionResult Delete(int id)
         {
             _departmentRepository.DeleteDepartment(id);
             return RedirectToAction(nameof(Index));
         }
 
-        
         private bool DepartmentExists(int id)
         {
             return _context.Departments.Any(e => e.Did == id);
