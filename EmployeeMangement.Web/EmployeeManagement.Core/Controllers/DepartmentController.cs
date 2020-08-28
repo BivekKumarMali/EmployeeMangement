@@ -25,7 +25,6 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _departmentViewModel = new DepartmentViewModel();
         }
 
-        // GET: Department
         public async Task<IActionResult> Index()
         {
             _departmentViewModel.Departments = await _departmentRepository.GetAllDepartments();

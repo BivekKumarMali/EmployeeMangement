@@ -34,12 +34,9 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View();
         }
 
-        // POST: Employee/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
+        public IActionResult Create([Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -50,7 +47,6 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(employee);
         }
 
-        // GET: Employee/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -67,9 +63,6 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(employee);
         }
 
-        // POST: Employee/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
