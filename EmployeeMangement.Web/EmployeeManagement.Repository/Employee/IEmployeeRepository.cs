@@ -10,8 +10,8 @@ namespace EmployeeMangement.Web.Repository
     public interface IEmployeeRepository
     {
 
-        Task<IEnumerable<Employee>> GetAllEmployees();
-        Task<Employee> GetEmployeeById(int id);
+        List<Employee> GetAllEmployees();
+        Employee GetEmployeeById(int? id);
         SelectList DepartmentListName();
         SelectList DepartmentListName(int id);
         SelectList DepartmentListId(int id);

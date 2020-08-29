@@ -25,9 +25,9 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _departmentViewModel = new DepartmentViewModel();
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            _departmentViewModel.Departments = await _departmentRepository.GetAllDepartments();
+            _departmentViewModel.Departments = _departmentRepository.GetAllDepartments();
             _departmentViewModel.Department = _departmentRepository.ResetDepartment();
             return View(_departmentViewModel);
         }
@@ -40,14 +40,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             }
             else
             {
-                if (DepartmentExists(department.Did))
-                {
-                    _departmentRepository.UpdateDepartment(department);
-                }
-                else
-                {
-                    _departmentRepository.AddDepartment(department);
-                }
+                _departmentRepository.UpdateDepartment(department);
             }
             return RedirectToAction(nameof(Index));
         }

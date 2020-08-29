@@ -11,8 +11,8 @@ namespace EmployeeMangement.Web.Repository
 {
     public interface IDepartmentRepository
     {
-        Task<IEnumerable<Department>> GetAllDepartments();
-        Task<Department> GetDepartmentById(int id);
+        List<Department> GetAllDepartments();
+        Department GetDepartmentById(int id);
         
         void AddDepartment(Department department);
         void UpdateDepartment(Department department);

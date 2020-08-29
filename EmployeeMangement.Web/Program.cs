@@ -15,17 +15,8 @@ namespace EmployeeMangement.Web
     {
         public static void Main(string[] args)
         {
-            var host = CreateHostBuilder(args).Build();
+            CreateHostBuilder(args).Build().Run();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                //3. Get the instance of BoardGamesDBContext in our services layer
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<AppDbContext>();
-
-                //4. Call the DataGenerator to create sample data
-            }
-            host.Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

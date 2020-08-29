@@ -22,9 +22,9 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _employeeRepository.GetAllEmployees());
+            return View(_employeeRepository.GetAllEmployees());
         }
 
 
@@ -53,8 +53,8 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             {
                 return NotFound();
             }
-
-            var employee = await _context.Employees.FindAsync(id);
+            Employee employee = _employeeRepository.GetEmployeeById(id);
+            //var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
