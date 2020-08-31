@@ -22,9 +22,9 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_employeeRepository.GetAllEmployees());
+            return View(await _employeeRepository.GetAllEmployees());
         }
 
 
@@ -47,7 +47,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(employee);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -105,5 +105,6 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         {
             return _context.Employees.Any(e => e.Eid == id);
         }
+
     }
 }

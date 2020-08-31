@@ -25,16 +25,16 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _departmentViewModel = new DepartmentViewModel();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _departmentViewModel.Departments = _departmentRepository.GetAllDepartments();
+            _departmentViewModel.Departments = await _departmentRepository.GetAllDepartments();
             _departmentViewModel.Department = _departmentRepository.ResetDepartment();
             return View(_departmentViewModel);
         }
 
         public IActionResult Add([Bind("Did,DepartmentName")] Department department)
         {
-            if(department.Did == 0)
+            if (department.Did == 0)
             {
                 _departmentRepository.AddDepartment(department);
             }
@@ -45,7 +45,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         public IActionResult Delete(int id)
         {
             _departmentRepository.DeleteDepartment(id);

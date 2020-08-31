@@ -10,7 +10,7 @@ namespace EmployeeMangement.Web.Repository
     public interface IEmployeeRepository
     {
 
-        List<Employee> GetAllEmployees();
+        Task<IEnumerable<Employee>> GetAllEmployees();
         Employee GetEmployeeById(int? id);
         SelectList DepartmentListName();
         SelectList DepartmentListName(int id);
@@ -20,6 +20,5 @@ namespace EmployeeMangement.Web.Repository
         void UpdateEmployee(Employee Employee);
         void DeleteEmployee(int id);
 
-        void SaveEmployee();
     }
 }
