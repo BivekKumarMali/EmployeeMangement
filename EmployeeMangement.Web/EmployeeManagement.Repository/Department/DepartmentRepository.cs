@@ -1,4 +1,5 @@
-﻿using EmployeeManagement.Web.Models;
+﻿using Dapper;
+using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
 using EmployeeMangement.Web.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Cryptography.X509Certificates;
@@ -17,51 +19,62 @@ namespace EmployeeMangement.Web.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        private AppDbContext _context;
-
-        public DepartmentRepository(AppDbContext context)
+        private readonly IConfiguration _config;
+        public IDbConnection connection
         {
-            _context = context;
+            get{ return new SqlConnection(_config.GetConnectionString("DefaultConnection")); }
         }
 
-        public async Task<IEnumerable<Department>> GetAllDepartments()
+        public DepartmentRepository(IConfiguration config)
         {
-            return await _context.Departments.ToListAsync();
-        }
-        public Department GetDepartmentById(int Did)
-        {
-            return _context.Departments.Find(Did);
+            _config = config;
         }
 
+        public async Task<List<Department>> GetAllDepartments()
+        {
+            using (IDbConnection con = connection)
+            {
+                string Query = "Select * from Departments";
+                con.Open();
+                var result = await con.QueryAsync<Department>(Query);
+                return result.ToList();
+            }
+        }
 
-        public void AddDepartment(Department department)
-        {
-            _context.Departments.AddAsync(department);
-            SaveDepartment();
-        }
-        public void UpdateDepartment(Department department)
-        {
-             _context.Update(department);
-               SaveDepartment();
-        }
-        public void DeleteDepartment(int id)
-        {
-            
-             Department department = GetDepartmentById(id);
-             _context.Departments.Remove(department);
-            SaveDepartment();        
-        }
 
         public Department ResetDepartment()
         {
             return new Department { DepartmentName = " ", Did = 0 };
         }
 
-        public void SaveDepartment()
+        public void AddDepartment(Department department)
         {
-            _context.SaveChanges();
+            using (IDbConnection con = connection)
+            {
+                string query = "INSERT INTO Departments(DepartmentName) VALUES(@DepartmentName)";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@DepartmentName", department.DepartmentName);
+                con.Execute(query, parameters);
+            }
         }
 
+        public void UpdateDepartment(Department department)
+        {
+            using (IDbConnection con = connection)
+            {
+                string query = "UPDATE Departments SET DepartmentName = " + department.DepartmentName + " WHERE Did = " + department.Did;
+                con.Execute(query);
+            }
+        }
 
+        public void DeleteDepartment(int id)
+        {
+            using (IDbConnection con = connection)
+            {
+                string Query = "DELETE FROM Departments WHERE Did =" + id;
+                con.Open();
+                con.Execute(Query);
+            }
+        }
     }
 }

@@ -11,14 +11,12 @@ namespace EmployeeMangement.Web.Repository
 {
     public interface IDepartmentRepository
     {
-        Task<IEnumerable<Department>> GetAllDepartments();
-        Department GetDepartmentById(int id);
+        Task<List<Department>> GetAllDepartments();
 
         void AddDepartment(Department department);
         void UpdateDepartment(Department department);
         void DeleteDepartment(int id);
 
         Department ResetDepartment();
-        void SaveDepartment();
     }
 }
