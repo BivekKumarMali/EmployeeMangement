@@ -12,15 +12,12 @@ namespace EmployeeMangement.Web.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private AppDbContext _context;
         private List<Department> _listOfDepartments = new List<Department>();
-        private int _size;
 
         SqlConnection con;
 
-        public EmployeeRepository(AppDbContext context)
+        public EmployeeRepository()
         {
-            _context = context;
             Department department;
             OpenConnection();
             SqlCommand cmd = new SqlCommand("select * from Departments", con);
@@ -37,9 +34,6 @@ namespace EmployeeMangement.Web.Repository
 
         public List<Employee> GetAllEmployees()
         {
-            /* var joinDbContext = _context.Employees.Include(e => e.Department);
-             return await joinDbContext.ToListAsync();
-            */
             List<Employee> employees = new List<Employee>();
             Employee employee = new Employee();
             OpenConnection();
@@ -82,7 +76,6 @@ namespace EmployeeMangement.Web.Repository
             }
             CloseConnection();
             return employee;
-            // return _context.Employees.Find(Did);
         }
 
 
@@ -91,8 +84,7 @@ namespace EmployeeMangement.Web.Repository
             OpenConnection();
             string query = "INSERT INTO Employees VALUES(@Name,@Surname,@Address,@Qualification,@ContactNumber,@Did)";
             SqlCommand cmd = new SqlCommand(query, con);
-            // Passing parameter values  
-            _size += 1;
+
             cmd.Parameters.AddWithValue("@Name", Employee.Name);
             cmd.Parameters.AddWithValue("@Surname", Employee.Surname);
             cmd.Parameters.AddWithValue("@Address", Employee.Address);
@@ -100,8 +92,6 @@ namespace EmployeeMangement.Web.Repository
             cmd.Parameters.AddWithValue("@ContactNumber", Employee.ContactNumber);
             cmd.Parameters.AddWithValue("@Did", Employee.Did);
             cmd.ExecuteNonQuery();
-            /* await _context.Employees.AddAsync(Employee);
-             SaveEmployee();*/
         }
         public void UpdateEmployee(Employee Employee)
         {
@@ -111,8 +101,6 @@ namespace EmployeeMangement.Web.Repository
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
             CloseConnection();
-            /*  _context.Update(Employee);
-              SaveEmployee(); */
         }
         public void DeleteEmployee(int id)
         {
@@ -121,24 +109,18 @@ namespace EmployeeMangement.Web.Repository
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
             CloseConnection();
-            /*Employee Employee = GetEmployeeById(id);
-            _context.Employees.Remove(Employee);
-            SaveEmployee();*/
         }
 
         public SelectList DepartmentListName()
         {
-            //return new SelectList(_context.Departments, "Did", "DepartmentName");
             return new SelectList(_listOfDepartments, "Did", "DepartmentName");
         }
         public SelectList DepartmentListName(int id)
         {
-            //return new SelectList(_context.Departments, "Did", "DepartmentName", id);
             return new SelectList(_listOfDepartments, "Did", "DepartmentName", id);
         }
         public SelectList DepartmentListId(int id)
         {
-            //return new SelectList(_context.Departments, "Did", "Did", id);
             return new SelectList(_listOfDepartments, "Did", "Did", id);
         }
         public void OpenConnection()
@@ -150,10 +132,6 @@ namespace EmployeeMangement.Web.Repository
         public void CloseConnection()
         {
             con.Close();
-        }
-        public void SaveEmployee()
-        {
-            _context.SaveChanges();
         }
 
 

@@ -13,12 +13,10 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository)
+        public EmployeeController( IEmployeeRepository employeeRepository)
         {
-            _context = context;
             _employeeRepository = employeeRepository;
         }
 
@@ -47,7 +45,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(employee);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -80,7 +78,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EmployeeExists(employee.Eid))
+                    if (_employeeRepository.GetEmployeeById(employee.Eid) == null)
                     {
                         return NotFound();
                     }
@@ -101,9 +99,5 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Eid == id);
-        }
     }
 }

@@ -17,16 +17,8 @@ namespace EmployeeMangement.Web.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        private AppDbContext _context;
-        private int _size; 
         
         SqlConnection con;
-        private Department departments;
-        
-        public DepartmentRepository(AppDbContext context)
-        {
-            _context = context;
-        }
         
         public List<Department> GetAllDepartments()
         {
@@ -43,14 +35,8 @@ namespace EmployeeMangement.Web.Repository
                 departments.Add(department);
             }
             CloseConnection();
-            _size = departments.Capacity;
 
             return departments;
-            // return await _context.Departments.ToListAsync();
-        }
-        public Department GetDepartmentById(int Did)
-        {
-            return  _context.Departments.Find(Did);
         }
  
         
@@ -59,13 +45,10 @@ namespace EmployeeMangement.Web.Repository
             OpenConnection();
             string query = "INSERT INTO Departments(DepartmentName) VALUES(@DepartmentName)";
             SqlCommand cmd = new SqlCommand(query, con);
-            // Passing parameter values  
-            _size += 1;
-            cmd.Parameters.AddWithValue("@Did", _size);
+
             cmd.Parameters.AddWithValue("@DepartmentName", department.DepartmentName);
             cmd.ExecuteNonQuery();
-            //await _context.Departments.AddAsync(department);
-            //SaveDepartment();
+            CloseConnection();
         }
         public void UpdateDepartment(Department department)
         {
@@ -74,9 +57,6 @@ namespace EmployeeMangement.Web.Repository
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
             CloseConnection();
-         /*   _context.Update(department);
-            SaveDepartment();
-        */
         }
         public void DeleteDepartment(int id)
         {
@@ -85,9 +65,6 @@ namespace EmployeeMangement.Web.Repository
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.ExecuteNonQuery();
             CloseConnection();
-            /* Department department = GetDepartmentById(id);
-             _context.Departments.Remove(department);
-             SaveDepartment();*/
         }
 
         
@@ -106,10 +83,6 @@ namespace EmployeeMangement.Web.Repository
             return new Department { DepartmentName = " ", Did = 0 };
         }
 
-        public void SaveDepartment()
-        {
-             _context.SaveChanges();
-        }
 
     }
 }

@@ -20,6 +20,5 @@ namespace EmployeeMangement.Web.Repository
         void UpdateEmployee(Employee Employee);
         void DeleteEmployee(int id);
 
-        void SaveEmployee();
     }
 }

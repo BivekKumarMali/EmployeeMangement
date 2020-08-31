@@ -14,13 +14,11 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
     public class DepartmentController : Controller
     {
-        private readonly AppDbContext _context;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly DepartmentViewModel _departmentViewModel;
 
-        public DepartmentController(AppDbContext context, IDepartmentRepository departmentRepository)
+        public DepartmentController(IDepartmentRepository departmentRepository)
         {
-            _context = context;
             _departmentRepository = departmentRepository;
             _departmentViewModel = new DepartmentViewModel();
         }
@@ -52,9 +50,5 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.Did == id);
-        }
     }
 }
