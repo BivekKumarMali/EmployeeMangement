@@ -19,62 +19,50 @@ namespace EmployeeMangement.Web.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {
-        private readonly IConfiguration _config;
-        public IDbConnection connection
-        {
-            get{ return new SqlConnection(_config.GetConnectionString("DefaultConnection")); }
-        }
+        private AppDbContext _context;
 
-        public DepartmentRepository(IConfiguration config)
+        public DepartmentRepository(AppDbContext context)
         {
-            _config = config;
+            _context = context;
         }
 
         public async Task<List<Department>> GetAllDepartments()
         {
-            using (IDbConnection con = connection)
-            {
-                string Query = "Select * from Departments";
-                con.Open();
-                var result = await con.QueryAsync<Department>(Query);
-                return result.ToList();
-            }
+            return await _context.Departments.ToListAsync();
+        }
+        public Department GetDepartmentById(int Did)
+        {
+            return _context.Departments.Find(Did);
         }
 
+
+        public void AddDepartment(Department department)
+        {
+            _context.Departments.AddAsync(department);
+            SaveDepartment();
+        }
+        public void UpdateDepartment(Department department)
+        {
+            _context.Update(department);
+            SaveDepartment();
+        }
+        public void DeleteDepartment(int id)
+        {
+
+            Department department = GetDepartmentById(id);
+            _context.Departments.Remove(department);
+            SaveDepartment();
+        }
 
         public Department ResetDepartment()
         {
             return new Department { DepartmentName = " ", Did = 0 };
         }
 
-        public void AddDepartment(Department department)
+        public void SaveDepartment()
         {
-            using (IDbConnection con = connection)
-            {
-                string query = "INSERT INTO Departments(DepartmentName) VALUES(@DepartmentName)";
-                DynamicParameters parameters = new DynamicParameters();
-                parameters.Add("@DepartmentName", department.DepartmentName);
-                con.Execute(query, parameters);
-            }
+            _context.SaveChanges();
         }
 
-        public void UpdateDepartment(Department department)
-        {
-            using (IDbConnection con = connection)
-            {
-                string query = "UPDATE Departments SET DepartmentName = " + department.DepartmentName + " WHERE Did = " + department.Did;
-                con.Execute(query);
-            }
-        }
-
-        public void DeleteDepartment(int id)
-        {
-            using (IDbConnection con = connection)
-            {
-                string Query = "DELETE FROM Departments WHERE Did =" + id;
-                con.Open();
-                con.Execute(Query);
-            }
-        }
     }
 }
