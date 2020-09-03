@@ -9,9 +9,12 @@ using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
 using EmployeeMangement.Web.Repository;
 using EmployeeManagement.Web.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
+
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly AppDbContext _context;

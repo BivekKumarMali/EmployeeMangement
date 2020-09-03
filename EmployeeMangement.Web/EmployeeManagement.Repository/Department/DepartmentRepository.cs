@@ -63,6 +63,5 @@ namespace EmployeeMangement.Web.Repository
         {
             _context.SaveChanges();
         }
-
     }
 }

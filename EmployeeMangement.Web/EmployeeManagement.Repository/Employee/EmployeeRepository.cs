@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +17,12 @@ namespace EmployeeMangement.Web.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private AppDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-
-        public EmployeeRepository(AppDbContext context)
+        public EmployeeRepository(AppDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<IEnumerable<Employee>> GetAllEmployees()
@@ -36,10 +38,10 @@ namespace EmployeeMangement.Web.Repository
 
         public async void AddEmployee(Employee Employee)
         {
-
             await _context.Employees.AddAsync(Employee);
             SaveEmployee();
         }
+
         public void UpdateEmployee(Employee Employee)
         {
             _context.Update(Employee);

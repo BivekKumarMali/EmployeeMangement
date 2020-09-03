@@ -19,6 +19,10 @@ namespace EmployeeManagement.Web.Models
         [Required]
         [Display(Name = "Last Name")]
         public string Surname { get; set; }
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
         [StringLength(100)]
         [Required]
         public string Address { get; set; }

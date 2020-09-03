@@ -8,25 +8,29 @@ using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
 using EmployeeMangement.Web.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
+
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository)
+        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository, UserManager<IdentityUser> userManager)
         {
             _context = context;
             _employeeRepository = employeeRepository;
+            _userManager = userManager;
         }
-
         public async Task<IActionResult> Index()
         {
             return View(await _employeeRepository.GetAllEmployees());
         }
-
 
         public IActionResult Create()
         {
@@ -36,25 +40,29 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,Email,Password,ContactNumber,Did")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _employeeRepository.AddEmployee(employee);
-                return RedirectToAction(nameof(Index));
+                var newUser = new IdentityUser { UserName = employee.Email, Email = employee.Email };
+                var result = await _userManager.CreateAsync(newUser, employee.Password);
+                if (result.Succeeded)
+                {
+                    _employeeRepository.AddEmployee(employee);
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            ViewData["Did"] = _employeeRepository.DepartmentListId(employee.Did);
+            ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
             return View(employee);
         }
 
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
             Employee employee = _employeeRepository.GetEmployeeById(id);
-            //var employee = await _context.Employees.FindAsync(id);
             if (employee == null)
             {
                 return NotFound();
@@ -65,7 +73,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
         {
             if (id != employee.Eid)
             {
@@ -76,7 +84,12 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             {
                 try
                 {
-                    _employeeRepository.UpdateEmployee(employee);
+                    var newUser = await _userManager.FindByEmailAsync(employee.Email);
+                    var result = await _userManager.UpdateAsync(newUser);
+                    if (result.Succeeded)
+                    {
+                        _employeeRepository.UpdateEmployee(employee);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -95,9 +108,12 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(employee);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            Employee employee = _employeeRepository.GetEmployeeById(id);
             _employeeRepository.DeleteEmployee(id);
+           // var newUser = await _userManager.FindByEmailAsync(employee.Email);
+           // var result = await _userManager.DeleteAsync(newUser);
             return RedirectToAction(nameof(Index));
         }
 
