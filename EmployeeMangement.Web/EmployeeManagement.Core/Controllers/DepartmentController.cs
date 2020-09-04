@@ -10,6 +10,7 @@ using EmployeeMangement.Web.Models;
 using EmployeeMangement.Web.Repository;
 using EmployeeManagement.Web.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
@@ -20,12 +21,14 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         private readonly AppDbContext _context;
         private readonly IDepartmentRepository _departmentRepository;
         private readonly DepartmentViewModel _departmentViewModel;
+        private readonly IManager _manager;
 
-        public DepartmentController(AppDbContext context, IDepartmentRepository departmentRepository)
+        public DepartmentController(AppDbContext context, IDepartmentRepository departmentRepository, IManager manager)
         {
             _context = context;
             _departmentRepository = departmentRepository;
             _departmentViewModel = new DepartmentViewModel();
+            _manager = manager;
         }
 
         public async Task<IActionResult> Index()
@@ -35,23 +38,35 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(_departmentViewModel);
         }
 
-        public IActionResult Add([Bind("Did,DepartmentName")] Department department)
+        public async Task<IActionResult> Add([Bind("Did,DepartmentName,RoleId")] Department department)
         {
             if (department.Did == 0)
-            {
-                _departmentRepository.AddDepartment(department);
+            {                
+                if (await _manager.AddRoleManager(department.DepartmentName))
+                {
+                    IdentityRole role = await _manager.GetRoleByName(department.DepartmentName);
+                    department.RoleId = role.Id;
+                    _departmentRepository.AddDepartment(department);
+                }
             }
             else
             {
-                _departmentRepository.UpdateDepartment(department);
+                if (await _manager.UpdateRoleManager(department.RoleId))
+                {
+                    _departmentRepository.UpdateDepartment(department);
+                }
             }
             return RedirectToAction(nameof(Index));
         }
 
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _departmentRepository.DeleteDepartment(id);
+            Department department = _departmentRepository.GetDepartmentById(id);
+            if (await _manager.DeleteRoleManager(department.RoleId))
+            {
+                _departmentRepository.DeleteDepartment(id);
+            }
             return RedirectToAction(nameof(Index));
         }
 

@@ -17,9 +17,9 @@ namespace EmployeeMangement.Web.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private AppDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<Roles> _userManager;
 
-        public EmployeeRepository(AppDbContext context, UserManager<IdentityUser> userManager)
+        public EmployeeRepository(AppDbContext context, UserManager<Roles> userManager)
         {
             _context = context;
             _userManager = userManager;

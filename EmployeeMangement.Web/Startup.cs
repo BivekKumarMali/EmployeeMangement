@@ -34,7 +34,7 @@ namespace EmployeeMangement.Web
                 {
                     sqlOptions.EnableRetryOnFailure();
                 }));
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<Roles, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 1;
                 options.Password.RequiredUniqueChars = 0;
@@ -47,6 +47,7 @@ namespace EmployeeMangement.Web
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IValidationRepository, ValidationRepository>();
+            services.AddScoped<IManager, Manager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

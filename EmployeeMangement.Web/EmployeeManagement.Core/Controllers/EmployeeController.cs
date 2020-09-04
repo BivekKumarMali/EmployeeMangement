@@ -19,13 +19,13 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IManager _manager;
 
-        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository, UserManager<IdentityUser> userManager)
+        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository, IManager manager)
         {
             _context = context;
             _employeeRepository = employeeRepository;
-            _userManager = userManager;
+            _manager = manager;
         }
         public async Task<IActionResult> Index()
         {
@@ -44,9 +44,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         {
             if (ModelState.IsValid)
             {
-                var newUser = new IdentityUser { UserName = employee.Email, Email = employee.Email };
-                var result = await _userManager.CreateAsync(newUser, employee.Password);
-                if (result.Succeeded)
+                if (await _manager.AddUserManager(employee.Email, employee.Did))
                 {
                     _employeeRepository.AddEmployee(employee);
                     return RedirectToAction(nameof(Index));
@@ -84,9 +82,8 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             {
                 try
                 {
-                    var newUser = await _userManager.FindByEmailAsync(employee.Email);
-                    var result = await _userManager.UpdateAsync(newUser);
-                    if (result.Succeeded)
+                    
+                    if (await _manager.UpdateUserManager(employee.Email))
                     {
                         _employeeRepository.UpdateEmployee(employee);
                     }
