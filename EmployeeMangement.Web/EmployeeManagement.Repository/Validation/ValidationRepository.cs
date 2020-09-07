@@ -10,9 +10,9 @@ namespace EmployeeMangement.Web.Repository
 {
     public class ValidationRepository : IValidationRepository
     {
-        private SignInManager<Roles> _signInManager;
+        private SignInManager<IdentityUser> _signInManager;
 
-        public ValidationRepository(SignInManager<Roles> signInManager)
+        public ValidationRepository(SignInManager<IdentityUser> signInManager)
         {
             _signInManager = signInManager;
         }

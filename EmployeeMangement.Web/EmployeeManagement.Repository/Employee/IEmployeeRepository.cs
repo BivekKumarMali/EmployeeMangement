@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace EmployeeMangement.Web.Repository
     {
 
         Task<IEnumerable<Employee>> GetAllEmployees();
-        Task<IEnumerable<Employee>> FilterEmployee(string departmentName);
+        Task<IEnumerable<Employee>> FilterEmployee(int Did);
         Employee GetEmployeeById(int? id);
-        Task<Employee> GetEmployeeByEmail(string email);
+        Task<Employee> GetEmployeeByUserId(string userId);
         SelectList DepartmentListName();
         SelectList DepartmentListName(int id);
         SelectList DepartmentListId(int id);
@@ -23,5 +24,8 @@ namespace EmployeeMangement.Web.Repository
         void DeleteEmployee(int id);
 
 
+        List<IdentityRole> RoleListName();
+        SelectList RoleListName(string id);
+        SelectList RoleListId(string id);
     }
 }

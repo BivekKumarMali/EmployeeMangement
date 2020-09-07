@@ -1,0 +1,52 @@
+﻿@model RolesViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<div class="row">
+    <div class="col-md-6 table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Department Name
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.IdentityRoles)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-primary" onclick="ListToRoleForm('@item.Id','@item.Name')">Edit</button> |
+                            <a class="btn btn-outline-danger" asp-controller="Roles" asp-action="Delete" asp-route-id="@item.Id" asp->Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <form asp-action="Add">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input hidden id="RoleId" asp-for="@Model.identityRole.Id" class="form-control" />
+                <label asp-for="@Model.identityRole.Name" class="control-label"></label>
+                <input type="text" id="Name" asp-for="@Model.identityRole.Name" class="form-control" required />
+                <span asp-validation-for="@Model.identityRole.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="reset" value="Reset" class="btn btn-success" asp-controller="Roles" asp-action="Reset">Reset</button>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -56,7 +56,7 @@ namespace EmployeeMangement.Web.Repository
 
         public Department ResetDepartment()
         {
-            return new Department { DepartmentName = " ", Did = 0, RoleId= ""};
+            return new Department { DepartmentName = " ", Did = 0};
         }
 
         public void SaveDepartment()

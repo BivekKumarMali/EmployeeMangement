@@ -36,7 +36,7 @@ namespace EmployeeMangement.Web
                 {
                     sqlOptions.EnableRetryOnFailure();
                 }));
-            services.AddIdentity<Roles, IdentityRole>(options =>
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequiredLength = 1;
                 options.Password.RequiredUniqueChars = 0;
@@ -44,8 +44,8 @@ namespace EmployeeMangement.Web
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
-            }).AddEntityFrameworkStores<AppDbContext>();
-          
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
             
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();

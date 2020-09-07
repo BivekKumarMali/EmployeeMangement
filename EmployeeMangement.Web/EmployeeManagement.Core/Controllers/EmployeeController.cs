@@ -10,21 +10,24 @@ using EmployeeMangement.Web.Models;
 using EmployeeMangement.Web.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using EmployeeManagement.Web.ViewModel;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,HR")]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IManager _manager;
+        private readonly EmployeeViewModel employeeViewModel;
 
         public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository, IManager manager)
         {
             _context = context;
             _employeeRepository = employeeRepository;
             _manager = manager;
+            employeeViewModel = new EmployeeViewModel();
         }
 
         public async Task<IActionResult> Index()
@@ -35,24 +38,25 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         public IActionResult Create()
         {
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListName();
+            ViewData["RolesName"] = _employeeRepository.RoleListName();
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,Email,Password,ContactNumber,Did,UserId")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did,RoleId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                if (await _manager.AddUserManager(employee))
+                employee.UserId = await _manager.AddUserManager(employee);
+                if(employee.UserId != null)
                 {
-                    Roles role = await _manager.GetUserByEmail(employee.Email);
-                    employee.UserId = role.Id;
                     _employeeRepository.AddEmployee(employee);
                     return RedirectToAction(nameof(Index));
                 }
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
+            ViewData["RolesName"] = _employeeRepository.RoleListId(employee.RoleId);
             return View(employee);
         }
 
@@ -68,6 +72,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 return NotFound();
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListName(employee.Did);
+            ViewData["Roles"] = _employeeRepository.RoleListName(employee.RoleId);
             return View(employee);
         }
 
@@ -85,7 +90,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 try
                 {
                     
-                    if (await _manager.UpdateUserManager(employee.UserId, employee))
+                    if (await _manager.UpdateUserManager(employee))
                     {
                         _employeeRepository.UpdateEmployee(employee);
                     }
@@ -104,6 +109,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
+            ViewData["Roles"] = _employeeRepository.RoleListId(employee.RoleId);
             return View(employee);
         }
 

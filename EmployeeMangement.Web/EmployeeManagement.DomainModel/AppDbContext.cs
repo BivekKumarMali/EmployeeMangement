@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeMangement.Web.Models
 {
-    public class AppDbContext : IdentityDbContext<Roles>
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }

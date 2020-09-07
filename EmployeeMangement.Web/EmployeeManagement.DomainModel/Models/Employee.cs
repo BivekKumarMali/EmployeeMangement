@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,10 +20,6 @@ namespace EmployeeManagement.Web.Models
         [Required]
         [Display(Name = "Last Name")]
         public string Surname { get; set; }
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        public string Password { get; set; }
         [StringLength(100)]
         [Required]
         public string Address { get; set; }
@@ -33,8 +30,10 @@ namespace EmployeeManagement.Web.Models
         [Required]
         [ForeignKey("Department")]
         public int Did { get; set; }
-
+        [ForeignKey("AspNetUsers")]
         public string UserId { get; set; }
+        [ForeignKey("AspNetRoles")]
+        public string RoleId { get; set; }
 
         public Department Department { get; set; }
 

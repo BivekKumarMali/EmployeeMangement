@@ -48,17 +48,12 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         {
             if(passwordResetView.Email != null) 
             {
-                Employee employee = await _employeeRepository.GetEmployeeByEmail(passwordResetView.Email);
-                if(employee == null)
-                {
-                    ModelState.AddModelError(string.Empty, "Wrong Email");
-                    return View(passwordResetView);
-                }
-                if( await _manager.UpdatePassword(passwordResetView, employee))
+                if( await _manager.UpdatePassword(passwordResetView))
                 {
                     return RedirectToAction("Login");
                 }
             }
+            ModelState.AddModelError(string.Empty, "Wrong Email");
             return View();
         }
 

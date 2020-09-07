@@ -37,37 +37,30 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(_departmentViewModel);
         }
 
-        public async Task<IActionResult> Add([Bind("Did,DepartmentName,RoleId")] Department department)
+        public IActionResult Add([Bind("Did,DepartmentName,RoleId")] Department department)
         {
             department.DepartmentName = department.DepartmentName.Trim();
             if (department.Did == 0)
             {
-                if (await _manager.AddRoleManager(department))
-                {
-                     IdentityRole role = await _manager.GetRoleByName(department.DepartmentName);
-                     department.RoleId = role.Id;
-                    _departmentRepository.AddDepartment(department);
-                }
+                _departmentRepository.AddDepartment(department);
+
             }
             else
             {
-                if (await _manager.UpdateRoleManager(department))
-                {
-                    _departmentRepository.UpdateDepartment(department);
-                }
+                _departmentRepository.UpdateDepartment(department);
+
 
             }
             return RedirectToAction(nameof(Index));
         }
 
 
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             Department department = _departmentRepository.GetDepartmentById(id);
-            if (await _manager.DeleteRoleManager(department.RoleId))
-            {
-                _departmentRepository.DeleteDepartment(id);
-            }
+
+            _departmentRepository.DeleteDepartment(id);
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -18,12 +18,14 @@ namespace EmployeeMangement.Web.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private AppDbContext _context;
-        private readonly UserManager<Roles> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
 
-        public EmployeeRepository(AppDbContext context, UserManager<Roles> userManager)
+        public EmployeeRepository(AppDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IEnumerable<Employee>> GetAllEmployees()
@@ -73,21 +75,31 @@ namespace EmployeeMangement.Web.Repository
             _context.SaveChanges();
         }
 
-        public async Task<IEnumerable<Employee>> FilterEmployee(string DepartmentName)
+        public async Task<IEnumerable<Employee>> FilterEmployee(int Did)
         {
-            int Did = _context.Departments.FirstOrDefault(x => x.DepartmentName == DepartmentName).Did;
             var Join = _context.Employees.Include(e => e.Department);
             List<Employee> employees = await Join.ToListAsync();
             return employees.Where(x => x.Did == Did);
         }
 
-        public async Task<Employee> GetEmployeeByEmail(string email)
+        public async Task<Employee> GetEmployeeByUserId(string userId)
         {
-            if(await _context.Employees.AnyAsync(x => x.Email == email))
-            {
-                return await _context.Employees.FirstAsync(x => x.Email == email);
-            }
-            return null;
+            return await _context.Employees.FirstAsync(x => x.UserId == userId);
+        }
+
+        public List<IdentityRole> RoleListName()
+        {
+            return new List<IdentityRole>(_roleManager.Roles.ToList());
+        }
+
+        public SelectList RoleListName(string id)
+        {
+            return new SelectList(_roleManager.Roles.ToList(), "RoleId", "Name", id);
+        }
+
+        public SelectList RoleListId(string id)
+        {
+            return new SelectList(_roleManager.Roles.ToList(), "RoleId", "Name", id);
         }
     }
 }

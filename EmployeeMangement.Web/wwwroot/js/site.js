@@ -2,10 +2,14 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function ListToForm(RoleId, Did, DepartmentName) {
-    document.getElementById("RoleId").value = RoleId;
+function ListToForm(Did, DepartmentName) {
     document.getElementById("Did").value = Did;
     document.getElementById("DepartmentName").value = DepartmentName;
+}
+
+function ListToRoleForm(RoleId, Name) {
+    document.getElementById("RoleId").value = RoleId;
+    document.getElementById("Name").value = Name;
 }
 
 function CheckPassword() {

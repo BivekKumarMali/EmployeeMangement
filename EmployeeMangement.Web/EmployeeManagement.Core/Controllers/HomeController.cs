@@ -19,9 +19,9 @@ namespace EmployeeMangement.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IValidationRepository _validation;
-        private readonly UserManager<Roles> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmployeeRepository _employeeRepository;
-        public HomeController(ILogger<HomeController> loggers, IValidationRepository validation, UserManager<Roles> userManager, IEmployeeRepository employeeRepository)
+        public HomeController(ILogger<HomeController> loggers, IValidationRepository validation, UserManager<IdentityUser> userManager, IEmployeeRepository employeeRepository)
         {
             _logger = loggers;
             _validation = validation;
@@ -33,20 +33,12 @@ namespace EmployeeMangement.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var user = _userManager.GetUserAsync(HttpContext.User).Result;
-            Roles role = await _userManager.FindByIdAsync(user.Id);
-            if(role == null)
-            {
-                return NotFound();
-            }
-            if(role.Role == "Admin")
+            Employee employee =await _employeeRepository.GetEmployeeByUserId(user.Id);
+            if(User.IsInRole("Admin") || User.IsInRole("HR"))
             {
                 return RedirectToAction("Index","Employee");
             }
-            else if (role.Role == "HR") 
-            {
-                return View(await _employeeRepository.GetAllEmployees());
-            }
-                return View(await _employeeRepository.FilterEmployee(role.Role));
+                return View(await _employeeRepository.FilterEmployee(employee.Did));
             
         }
 

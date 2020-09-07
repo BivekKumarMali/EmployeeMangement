@@ -12,7 +12,5 @@ namespace EmployeeManagement.Web.Models
         public int Did { get; set; }
         [Display(Name = "Department Name")]
         public string DepartmentName { get; set; }
-
-        public string RoleId { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,13 @@ namespace EmployeeMangement.Web.Repository
 {
     public class Manager : IManager
     {
-        private UserManager<Roles> _userManager;
+        private UserManager<IdentityUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
         private IDepartmentRepository _departmentRepository;
         private IEmployeeRepository _employeeRepository;
 
         public Manager(
-            UserManager<Roles> userManager,
+            UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IDepartmentRepository departmentRepository,
             IEmployeeRepository employeeRepository
@@ -29,21 +30,29 @@ namespace EmployeeMangement.Web.Repository
         }
         
 
-        public async Task<bool> AddUserManager(Employee employee)
+        public async Task<string> AddUserManager(Employee employee)
         {
-            Department department = _departmentRepository.GetDepartmentById(employee.Did);
-            Roles user = new Roles { UserName = employee.Email, Email = employee.Email, Role = department.DepartmentName.Trim() };
-            var addUserManagerStatus = await _userManager.CreateAsync(user, employee.Password);
-            Roles role = await GetUserByEmail(employee.Email);
-            var addUserRole = await AddUserRole(department.RoleId, role.Id);
-            return addUserManagerStatus.Succeeded;
+            string email = GenerateEmail(employee.Name, employee.Surname);
+            string password = "12345";
+            IdentityUser identityUser = new IdentityUser { UserName = email, Email = email };
+            var addUserManagerStatus = await _userManager.CreateAsync(identityUser, password);
+            identityUser = await GetUserByEmail(email);
+            await AddUserRole(employee.RoleId, identityUser.Id);
+            return identityUser.Id;
+        }
+
+        private string GenerateEmail(string name, string surname)
+        {
+            string email = name + surname;
+            email = String.Concat(email.Where(c => !Char.IsWhiteSpace(c)));
+            return email + "@gmail.com";
         }
 
         public async Task<bool> AddUserRole(string roleId, string userId)
         {
             IdentityRole role = await GetRoleById(roleId);
-            Roles user = await GetUserById(userId);
-            var result = await _userManager.AddToRoleAsync(user, role.Name.Trim());
+            IdentityUser user = await GetUserById(userId);
+            var result = await _userManager.AddToRoleAsync(user, role.Name);
             return result.Succeeded;
         }
 
@@ -51,7 +60,7 @@ namespace EmployeeMangement.Web.Repository
 
         public async Task<bool> DeleteUserManager(string userId)
         {
-            Roles roles = await _userManager.FindByIdAsync(userId);
+            IdentityUser roles = await _userManager.FindByIdAsync(userId);
             var result = await _userManager.DeleteAsync(roles);
             return result.Succeeded;
         }
@@ -59,43 +68,27 @@ namespace EmployeeMangement.Web.Repository
         public async Task<bool> DeleteUserRole(string roleId, string userId)
         {
             IdentityRole role = await GetRoleById(roleId);
-            Roles user = await GetUserById(userId);
+            IdentityUser user = await GetUserById(userId);
             var result = await _userManager.RemoveFromRoleAsync(user, role.Name);
             return result.Succeeded;
         }
 
         
 
-        public async Task<bool> UpdateUserManager(string id, Employee employee)
+        public async Task<bool> UpdateUserManager(Employee employee)
         {
-            Roles newUser = await _userManager.FindByIdAsync(id);
-            newUser.Email = employee.Email;
-            newUser.UserName = employee.Email;
-            var updateUserManagerStatus = await _userManager.UpdateAsync(newUser);
-            Employee pastEmployee = _employeeRepository.GetEmployeeById(employee.Eid);
-            if (!(pastEmployee.Password == employee.Password))
-            {
-                var changePasswordStatus = await _userManager.ChangePasswordAsync(newUser, pastEmployee.Password, employee.Password);
-                return updateUserManagerStatus.Succeeded && changePasswordStatus.Succeeded;
-            }
-            else
-            {
-                return updateUserManagerStatus.Succeeded;
-            }
+            IdentityUser identityUser = await _userManager.FindByIdAsync(employee.UserId);
+            identityUser.Email = GenerateEmail(employee.Name, employee.Surname);
+            identityUser.UserName = identityUser.Email;
+            var updateUserManagerStatus = await _userManager.UpdateAsync(identityUser);
+            return updateUserManagerStatus.Succeeded;
         }
-
+        // Incomplete
         public async Task<bool> UpdateUserRole(string roleId, string userId)
         {
             if(!await UserRoleExist(roleId, userId))
             {
-                List<Department> departments = await _departmentRepository.GetAllDepartments();
-                foreach (var department in departments)
-                {
-                    if(await UserRoleExist(department.RoleId, userId))
-                    {
-                        await DeleteUserRole(department.RoleId, userId);
-                    }
-                }
+                
                 await AddUserRole(roleId, userId);
                 return await UserRoleExist(roleId, userId);
             }            
@@ -112,12 +105,12 @@ namespace EmployeeMangement.Web.Repository
             return await _roleManager.FindByNameAsync(departmentName);
         }
 
-        public async Task<Roles> GetUserById(string id)
+        public async Task<IdentityUser> GetUserById(string id)
         {
             return await _userManager.FindByIdAsync(id);
         }
         
-        public async Task<Roles> GetUserByEmail(string email)
+        public async Task<IdentityUser> GetUserByEmail(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
@@ -125,37 +118,43 @@ namespace EmployeeMangement.Web.Repository
         public async Task<bool> UserRoleExist(string roleId, string userId)
         {
             IdentityRole role = await GetRoleById(roleId);
-            Roles user = await GetUserById(userId);
-            return await _userManager.IsInRoleAsync(user, role.Name);
+            IdentityUser identityUser = await GetUserById(userId);
+            return await _userManager.IsInRoleAsync(identityUser, role.Name);
         }
 
 
-        public async Task<bool> UpdatePassword(PasswordResetView passwordResetView, Employee employee)
+        public async Task<bool> UpdatePassword(PasswordResetView passwordResetView)
         {
-            Roles User = await _userManager.FindByEmailAsync(employee.Email);
-            var updatePasswordStatus = await _userManager.ChangePasswordAsync(User, employee.Password, passwordResetView.NewPassword);
+            IdentityUser identityUser = await _userManager.FindByEmailAsync(passwordResetView.Email);
+            var token = _userManager.GeneratePasswordResetTokenAsync(identityUser).Result;
+            var updatePasswordStatus = await _userManager.ResetPasswordAsync(identityUser, token, passwordResetView.NewPassword);
             return updatePasswordStatus.Succeeded;
         }
 
-        public async Task<bool> AddRoleManager(Department department)
+        public List<IdentityRole> GetAllRoles()
         {
-            IdentityRole role = new IdentityRole { Name = department.DepartmentName };
-            var addRoleStatus = await _roleManager.CreateAsync(role);
+            var list = _roleManager.Roles.ToList();
+            return list;
+        }
+        public async Task<bool> AddRoleManager(IdentityRole identityRole)
+        {
+            IdentityRole ir = new IdentityRole { Name = identityRole.Name };
+            var addRoleStatus = await _roleManager.CreateAsync(ir);
             return addRoleStatus.Succeeded;
         }
 
-        public async Task<bool> UpdateRoleManager(Department department)
+        public async Task<bool> UpdateRoleManager(IdentityRole identityRole)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(department.RoleId);
-            role.Name = department.DepartmentName;
-            var updateRoleStatus = await _roleManager.UpdateAsync(role);
+            IdentityRole ir =await _roleManager.FindByIdAsync(identityRole.Id);
+            ir.Name = identityRole.Name;
+            var updateRoleStatus = await _roleManager.UpdateAsync(ir);
             return updateRoleStatus.Succeeded;
 
         }
 
-        public async Task<bool> DeleteRoleManager(string roleId)
+        public async Task<bool> DeleteRoleManager(string Id)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(roleId);
+            IdentityRole role = await _roleManager.FindByIdAsync(Id);
             var deleteRoleStatus = await _roleManager.DeleteAsync(role);
             return deleteRoleStatus.Succeeded;
         }

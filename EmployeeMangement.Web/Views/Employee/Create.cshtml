@@ -33,16 +33,6 @@
                 <span asp-validation-for="Qualification" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ContactNumber" class="control-label"></label>
                 <input asp-for="ContactNumber" class="form-control" />
                 <span asp-validation-for="ContactNumber" class="text-danger"></span>
@@ -50,7 +40,16 @@
             <div class="form-group">
                 <label for="Department Name" class="control-label"></label>
                 <select asp-for="Did" class="form-control" asp-items="ViewBag.DepartmentName"></select>
-                <input hidden asp-for="UserId" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label for="Rols" class="control-label"></label>
+                <select asp-for="RoleId" class="form-control">
+                    @foreach (var item in @ViewBag.RolesName)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

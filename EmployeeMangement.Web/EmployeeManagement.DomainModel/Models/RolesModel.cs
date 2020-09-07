@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Web.Models
 {
-    public class Roles: IdentityUser
+    public class RolesModel
     {
-        public string Role { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
     }
 }
