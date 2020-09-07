@@ -23,7 +23,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _employeeRepository = employeeRepository;
         }
 
-        public async Task<ActionResult> Login([Bind("Email,Password")] LogInViewModel? logInViewModel)
+        public async Task<ActionResult> Login([Bind("Email,Password")] LogInViewModel logInViewModel)
         {
             if (ModelState.IsValid && logInViewModel.Email != null)
             {

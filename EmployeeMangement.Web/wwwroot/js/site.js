@@ -7,3 +7,17 @@ function ListToForm(RoleId, Did, DepartmentName) {
     document.getElementById("Did").value = Did;
     document.getElementById("DepartmentName").value = DepartmentName;
 }
+
+function CheckPassword() {
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirmPassword").value;
+
+    if (confirmPassword != password) {
+        document.getElementById("button").disabled = "true";
+        document.getElementById("Error").hidden = "";
+    }
+    else {
+        document.getElementById("button").disabled = "";
+        document.getElementById("Error").hidden = "true";
+    }
+}

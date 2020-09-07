@@ -38,6 +38,5 @@ namespace EmployeeManagement.Web.Models
 
         public Department Department { get; set; }
 
-        public string? roleid { get; set; }
     }
 }

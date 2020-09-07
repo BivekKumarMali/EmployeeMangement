@@ -39,10 +39,13 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         public async Task<IActionResult> Add([Bind("Did,DepartmentName,RoleId")] Department department)
         {
+            department.DepartmentName = department.DepartmentName.Trim();
             if (department.Did == 0)
             {
                 if (await _manager.AddRoleManager(department))
                 {
+                     IdentityRole role = await _manager.GetRoleByName(department.DepartmentName);
+                     department.RoleId = role.Id;
                     _departmentRepository.AddDepartment(department);
                 }
             }
