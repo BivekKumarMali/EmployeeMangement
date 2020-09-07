@@ -15,33 +15,16 @@ namespace EmployeeMangement.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IValidationRepository _validation;
 
-        public HomeController(ILogger<HomeController> loggers, IValidationRepository validation)
+        public HomeController(ILogger<HomeController> loggers)
         {
             _logger = loggers;
-            _validation = validation;
         }
 
-        public async Task<ActionResult> Index([Bind("Email,Password")] LogInViewModel? logInViewModel)
+        public ActionResult Index()
         {
-                if (ModelState.IsValid && logInViewModel.Email != null)
-                {
-                    if (await _validation.CheckValidation(logInViewModel.Email, logInViewModel.Password))
-                    {
-                        return RedirectToAction("Index", "Employee");
-                    }
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-                }
-                return View(logInViewModel);
-            
+            return View();
         }
-        [HttpPost]
-        public IActionResult Logout()
-        {
-            _validation.Logout();
-            return RedirectToAction("Index", "Home");
-        } 
         public IActionResult Privacy()
         {
             return View();

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
 using EmployeeMangement.Web.Repository;
@@ -14,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
 
-    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly AppDbContext _context;

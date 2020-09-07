@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EmployeeMangement.Web.Models
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext: DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }

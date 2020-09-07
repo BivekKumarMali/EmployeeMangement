@@ -14,18 +14,15 @@ using Microsoft.AspNetCore.Authorization;
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
 
-    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository, UserManager<IdentityUser> userManager)
+        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository)
         {
             _context = context;
             _employeeRepository = employeeRepository;
-            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -40,23 +37,18 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,Email,Password,ContactNumber,Did")] Employee employee)
+        public IActionResult Create([Bind("Eid,Name,Surname,Address,Qualification,Email,Password,ContactNumber,Did")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                var newUser = new IdentityUser { UserName = employee.Email, Email = employee.Email };
-                var result = await _userManager.CreateAsync(newUser, employee.Password);
-                if (result.Succeeded)
-                {
-                    _employeeRepository.AddEmployee(employee);
-                    return RedirectToAction(nameof(Index));
-                }
+                _employeeRepository.AddEmployee(employee);
+                return RedirectToAction(nameof(Index));
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
             return View(employee);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -73,7 +65,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
+        public IActionResult Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
         {
             if (id != employee.Eid)
             {
@@ -82,38 +74,17 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    var newUser = await _userManager.FindByEmailAsync(employee.Email);
-                    var result = await _userManager.UpdateAsync(newUser);
-                    if (result.Succeeded)
-                    {
-                        _employeeRepository.UpdateEmployee(employee);
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.Eid))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _employeeRepository.UpdateEmployee(employee);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["Did"] = _employeeRepository.DepartmentListId(employee.Did);
             return View(employee);
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             Employee employee = _employeeRepository.GetEmployeeById(id);
             _employeeRepository.DeleteEmployee(id);
-           // var newUser = await _userManager.FindByEmailAsync(employee.Email);
-           // var result = await _userManager.DeleteAsync(newUser);
             return RedirectToAction(nameof(Index));
         }
 

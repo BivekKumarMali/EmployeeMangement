@@ -17,12 +17,10 @@ namespace EmployeeMangement.Web.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private AppDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public EmployeeRepository(AppDbContext context, UserManager<IdentityUser> userManager)
+        public EmployeeRepository(AppDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
 
         public async Task<IEnumerable<Employee>> GetAllEmployees()
