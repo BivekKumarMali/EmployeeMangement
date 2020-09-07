@@ -13,8 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
-
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
@@ -27,6 +26,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             _employeeRepository = employeeRepository;
             _manager = manager;
         }
+
         public async Task<IActionResult> Index()
         {
             return View(await _employeeRepository.GetAllEmployees());
@@ -40,12 +40,14 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,Email,Password,ContactNumber,Did")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,Email,Password,ContactNumber,Did,UserId")] Employee employee)
         {
             if (ModelState.IsValid)
             {
-                if (await _manager.AddUserManager(employee.Email, employee.Did))
+                if (await _manager.AddUserManager(employee))
                 {
+                    Roles role = await _manager.GetUserByEmail(employee.Email);
+                    employee.UserId = role.Id;
                     _employeeRepository.AddEmployee(employee);
                     return RedirectToAction(nameof(Index));
                 }
@@ -54,7 +56,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(employee);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
@@ -71,7 +73,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did,UserID")] Employee employee)
         {
             if (id != employee.Eid)
             {
@@ -83,7 +85,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 try
                 {
                     
-                    if (await _manager.UpdateUserManager(employee.Email))
+                    if (await _manager.UpdateUserManager(employee.UserId, employee))
                     {
                         _employeeRepository.UpdateEmployee(employee);
                     }
@@ -101,16 +103,17 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Did"] = _employeeRepository.DepartmentListId(employee.Did);
+            ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
             return View(employee);
         }
 
         public async Task<IActionResult> Delete(int id)
         {
             Employee employee = _employeeRepository.GetEmployeeById(id);
-            _employeeRepository.DeleteEmployee(id);
-           // var newUser = await _userManager.FindByEmailAsync(employee.Email);
-           // var result = await _userManager.DeleteAsync(newUser);
+            if (await _manager.DeleteUserManager(employee.UserId))
+            {
+                _employeeRepository.DeleteEmployee(id);
+            }
             return RedirectToAction(nameof(Index));
         }
 

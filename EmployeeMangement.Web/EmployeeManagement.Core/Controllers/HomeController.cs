@@ -7,41 +7,49 @@ using EmployeeManagement.Web;
 using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.ViewModel;
 using EmployeeMangement.Web.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace EmployeeMangement.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IValidationRepository _validation;
-
-        public HomeController(ILogger<HomeController> loggers, IValidationRepository validation)
+        private readonly UserManager<Roles> _userManager;
+        private readonly IEmployeeRepository _employeeRepository;
+        public HomeController(ILogger<HomeController> loggers, IValidationRepository validation, UserManager<Roles> userManager, IEmployeeRepository employeeRepository)
         {
             _logger = loggers;
             _validation = validation;
+            _userManager = userManager;
+            _employeeRepository = employeeRepository;
+
         }
 
-        public async Task<ActionResult> Index([Bind("Email,Password")] LogInViewModel? logInViewModel)
+        public async Task<IActionResult> Index()
         {
-                if (ModelState.IsValid && logInViewModel.Email != null)
-                {
-                    if (await _validation.CheckValidation(logInViewModel.Email, logInViewModel.Password))
-                    {
-                        return RedirectToAction("Index", "Employee");
-                    }
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
-                }
-                return View(logInViewModel);
+            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            Roles role = await _userManager.FindByIdAsync(user.Id);
+            if(role == null)
+            {
+                return NotFound();
+            }
+            if(role.Role == "Admin")
+            {
+                return RedirectToAction("Index","Employee");
+            }
+            else if (role.Role == "HR") 
+            {
+                return View(await _employeeRepository.GetAllEmployees());
+            }
+                return View(await _employeeRepository.FilterEmployee(role.Role));
             
         }
-        [HttpPost]
-        public IActionResult Logout()
-        {
-            _validation.Logout();
-            return RedirectToAction("Index", "Home");
-        } 
+
         public IActionResult Privacy()
         {
             return View();

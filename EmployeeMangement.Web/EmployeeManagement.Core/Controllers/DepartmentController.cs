@@ -14,8 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
-
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class DepartmentController : Controller
     {
         private readonly AppDbContext _context;
@@ -41,20 +40,19 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         public async Task<IActionResult> Add([Bind("Did,DepartmentName,RoleId")] Department department)
         {
             if (department.Did == 0)
-            {                
-                if (await _manager.AddRoleManager(department.DepartmentName))
+            {
+                if (await _manager.AddRoleManager(department))
                 {
-                    IdentityRole role = await _manager.GetRoleByName(department.DepartmentName);
-                    department.RoleId = role.Id;
                     _departmentRepository.AddDepartment(department);
                 }
             }
             else
             {
-                if (await _manager.UpdateRoleManager(department.RoleId))
+                if (await _manager.UpdateRoleManager(department))
                 {
                     _departmentRepository.UpdateDepartment(department);
                 }
+
             }
             return RedirectToAction(nameof(Index));
         }

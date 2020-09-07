@@ -7,6 +7,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -72,7 +73,21 @@ namespace EmployeeMangement.Web.Repository
             _context.SaveChanges();
         }
 
+        public async Task<IEnumerable<Employee>> FilterEmployee(string DepartmentName)
+        {
+            int Did = _context.Departments.FirstOrDefault(x => x.DepartmentName == DepartmentName).Did;
+            var Join = _context.Employees.Include(e => e.Department);
+            List<Employee> employees = await Join.ToListAsync();
+            return employees.Where(x => x.Did == Did);
+        }
 
-
+        public async Task<Employee> GetEmployeeByEmail(string email)
+        {
+            if(await _context.Employees.AnyAsync(x => x.Email == email))
+            {
+                return await _context.Employees.FirstAsync(x => x.Email == email);
+            }
+            return null;
+        }
     }
 }

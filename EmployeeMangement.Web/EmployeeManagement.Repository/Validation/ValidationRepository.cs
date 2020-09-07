@@ -22,6 +22,7 @@ namespace EmployeeMangement.Web.Repository
             var result = await _signInManager.PasswordSignInAsync(email, password, true, false);
             return result.Succeeded;
         }
+
         public async Task Logout()
         {
             await _signInManager.SignOutAsync();

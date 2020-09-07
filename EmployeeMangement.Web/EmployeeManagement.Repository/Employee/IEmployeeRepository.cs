@@ -11,7 +11,9 @@ namespace EmployeeMangement.Web.Repository
     {
 
         Task<IEnumerable<Employee>> GetAllEmployees();
+        Task<IEnumerable<Employee>> FilterEmployee(string departmentName);
         Employee GetEmployeeById(int? id);
+        Task<Employee> GetEmployeeByEmail(string email);
         SelectList DepartmentListName();
         SelectList DepartmentListName(int id);
         SelectList DepartmentListId(int id);
@@ -19,6 +21,7 @@ namespace EmployeeMangement.Web.Repository
         void AddEmployee(Employee Employee);
         void UpdateEmployee(Employee Employee);
         void DeleteEmployee(int id);
+
 
     }
 }

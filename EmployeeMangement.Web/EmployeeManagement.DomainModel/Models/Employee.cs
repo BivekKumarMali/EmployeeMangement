@@ -34,6 +34,10 @@ namespace EmployeeManagement.Web.Models
         [ForeignKey("Department")]
         public int Did { get; set; }
 
+        public string UserId { get; set; }
+
         public Department Department { get; set; }
+
+        public string? roleid { get; set; }
     }
 }

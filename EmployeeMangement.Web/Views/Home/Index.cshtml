@@ -1,30 +1,68 @@
-﻿@model LogInViewModel
+﻿@model IEnumerable<EmployeeManagement.Web.Models.Employee>
+@inject SignInManager<Roles> signInManager
+
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Index";
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <form asp-action="Index">
-                <div asp-validation-summary="All" class="text-danger">
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Email" class="control-label"></label>
-                    <input type="text" id="Email" asp-for="@Model.Email" class="form-control" autocomplete="off" required />
-                    <span asp-validation-for="@Model.Email" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Password" class="control-label"></label>
-                    <input type="password" id="Password" asp-for="@Model.Password" class="form-control" autocomplete="off" required />
-                    <span asp-validation-for="@Model.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-primary"/>
-                </div>
-                <a value="forgetpassword" asp-controller="Home" asp-action="ForgetPassword">ForgetPassword</a>
-            </form>
-        </div>
-    </div>
-</div>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Qualification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Surname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qualification)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.DepartmentName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

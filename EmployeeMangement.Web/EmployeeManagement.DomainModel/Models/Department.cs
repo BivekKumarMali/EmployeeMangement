@@ -13,6 +13,6 @@ namespace EmployeeManagement.Web.Models
         [Display(Name = "Department Name")]
         public string DepartmentName { get; set; }
 
-        public string RoleId { get; set; }
+        public string RoleId;
     }
 }
