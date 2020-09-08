@@ -15,7 +15,7 @@ namespace EmployeeMangement.Web.Repository
 
         public Manager(
             UserManager<IdentityUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<IdentityRole> roleManager
             )
         {
             _userManager = userManager;
