@@ -45,8 +45,13 @@
                 <span asp-validation-for="Did" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label for="Department Name" class="control-label"></label>
-                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.Roles"></select>
+                <label for="Rols" class="control-label"></label>
+                <select asp-for="RoleId" class="form-control">
+                    @foreach (var item in @ViewBag.RolesName)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
                 <span asp-validation-for="RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">

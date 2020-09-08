@@ -25,7 +25,5 @@ namespace EmployeeMangement.Web.Repository
 
 
         List<IdentityRole> RoleListName();
-        SelectList RoleListName(string id);
-        SelectList RoleListId(string id);
     }
 }

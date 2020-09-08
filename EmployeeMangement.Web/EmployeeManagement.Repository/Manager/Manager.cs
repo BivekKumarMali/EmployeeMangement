@@ -44,8 +44,32 @@ namespace EmployeeMangement.Web.Repository
         private string GenerateEmail(string name, string surname)
         {
             string email = name + surname;
+            email = email.ToLower();
             email = String.Concat(email.Where(c => !Char.IsWhiteSpace(c)));
             return email + "@gmail.com";
+        }
+        
+        public async Task<bool> DeleteUserManager(string userId)
+        {
+            IdentityUser roles = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.DeleteAsync(roles);
+            return result.Succeeded;
+        }
+
+        public async Task<bool> UpdateUserManager(Employee employee)
+        {
+            IdentityUser identityUser = await _userManager.FindByIdAsync(employee.UserId);
+            identityUser.Email = GenerateEmail(employee.Name, employee.Surname);
+            identityUser.UserName = identityUser.Email;
+            var updateUserManagerStatus = await _userManager.UpdateAsync(identityUser);
+            if (updateUserManagerStatus.Succeeded)
+            {
+                if(await UpdateUserRole(employee.RoleId, employee.UserId))
+                {
+                    return true;
+                }
+            }
+            return updateUserManagerStatus.Succeeded;
         }
 
         public async Task<bool> AddUserRole(string roleId, string userId)
@@ -56,14 +80,6 @@ namespace EmployeeMangement.Web.Repository
             return result.Succeeded;
         }
 
-        
-
-        public async Task<bool> DeleteUserManager(string userId)
-        {
-            IdentityUser roles = await _userManager.FindByIdAsync(userId);
-            var result = await _userManager.DeleteAsync(roles);
-            return result.Succeeded;
-        }
 
         public async Task<bool> DeleteUserRole(string roleId, string userId)
         {
@@ -73,22 +89,14 @@ namespace EmployeeMangement.Web.Repository
             return result.Succeeded;
         }
 
-        
-
-        public async Task<bool> UpdateUserManager(Employee employee)
-        {
-            IdentityUser identityUser = await _userManager.FindByIdAsync(employee.UserId);
-            identityUser.Email = GenerateEmail(employee.Name, employee.Surname);
-            identityUser.UserName = identityUser.Email;
-            var updateUserManagerStatus = await _userManager.UpdateAsync(identityUser);
-            return updateUserManagerStatus.Succeeded;
-        }
         // Incomplete
         public async Task<bool> UpdateUserRole(string roleId, string userId)
         {
             if(!await UserRoleExist(roleId, userId))
             {
-                
+                IdentityUser user = await GetUserById(userId);
+                IList<string> allRoles = await _userManager.GetRolesAsync(user);
+                await _userManager.RemoveFromRolesAsync(user, allRoles);
                 await AddUserRole(roleId, userId);
                 return await UserRoleExist(roleId, userId);
             }            

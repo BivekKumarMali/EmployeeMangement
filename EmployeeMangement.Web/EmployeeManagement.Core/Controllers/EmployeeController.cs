@@ -56,7 +56,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 }
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
-            ViewData["RolesName"] = _employeeRepository.RoleListId(employee.RoleId);
+            ViewData["RolesName"] = _employeeRepository.RoleListName();
             return View(employee);
         }
 
@@ -72,7 +72,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 return NotFound();
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListName(employee.Did);
-            ViewData["Roles"] = _employeeRepository.RoleListName(employee.RoleId);
+            ViewData["RolesName"] = _employeeRepository.RoleListName();
             return View(employee);
         }
 
@@ -109,7 +109,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
-            ViewData["Roles"] = _employeeRepository.RoleListId(employee.RoleId);
+            ViewData["RolesName"] = _employeeRepository.RoleListName();
             return View(employee);
         }
 

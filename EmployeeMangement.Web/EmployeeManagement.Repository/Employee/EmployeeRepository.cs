@@ -92,14 +92,8 @@ namespace EmployeeMangement.Web.Repository
             return new List<IdentityRole>(_roleManager.Roles.ToList());
         }
 
-        public SelectList RoleListName(string id)
-        {
-            return new SelectList(_roleManager.Roles.ToList(), "RoleId", "Name", id);
-        }
+        
 
-        public SelectList RoleListId(string id)
-        {
-            return new SelectList(_roleManager.Roles.ToList(), "RoleId", "Name", id);
-        }
+       
     }
 }
