@@ -14,26 +14,29 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         
         private readonly IValidationRepository _validation;
         private readonly IManager _manager;
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IPredefined _predefined;
 
-        public AccountController(IValidationRepository validation, IManager manager, IEmployeeRepository employeeRepository)
+        public AccountController(IValidationRepository validation, IManager manager, IEmployeeRepository employeeRepository, IPredefined predefined)
         {
             _validation = validation;
             _manager = manager;
-            _employeeRepository = employeeRepository;
+            _predefined = predefined;
         }
 
         public async Task<ActionResult> Login([Bind("Email,Password")] LogInViewModel logInViewModel)
         {
-            if (ModelState.IsValid && logInViewModel.Email != null)
+            if (!await _predefined.AddDefaulUser())
             {
-                if (await _validation.CheckValidation(logInViewModel.Email, logInViewModel.Password))
+                if (ModelState.IsValid && logInViewModel.Email != null)
                 {
-                    var User = await _manager.GetUserByEmail(logInViewModel.Email);
-                    string UserId = User.Id;
-                    return RedirectToAction("Index", "Home");
+                    if (await _validation.CheckValidation(logInViewModel.Email, logInViewModel.Password))
+                    {
+                        var User = await _manager.GetUserByEmail(logInViewModel.Email);
+                        string UserId = User.Id;
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
-                ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
             }
             return View(logInViewModel);
 

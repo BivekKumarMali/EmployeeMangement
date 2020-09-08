@@ -4,14 +4,16 @@ using EmployeeMangement.Web.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeMangement.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200908074124_AddDataInDeparetment")]
+    partial class AddDataInDeparetment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,20 +86,6 @@ namespace EmployeeMangement.Web.Migrations
                     b.HasIndex("Did");
 
                     b.ToTable("Employees");
-
-                    b.HasData(
-                        new
-                        {
-                            Eid = 1,
-                            Address = "assd",
-                            ContactNumber = 12L,
-                            Did = 1,
-                            Name = "admin",
-                            Qualification = "yu",
-                            RoleId = "",
-                            Surname = "Default",
-                            UserId = ""
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

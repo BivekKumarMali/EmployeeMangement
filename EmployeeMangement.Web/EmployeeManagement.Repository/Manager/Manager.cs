@@ -1,7 +1,6 @@
 ﻿using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.ViewModel;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,23 +12,21 @@ namespace EmployeeMangement.Web.Repository
     {
         private UserManager<IdentityUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
-        private IDepartmentRepository _departmentRepository;
-        private IEmployeeRepository _employeeRepository;
 
         public Manager(
             UserManager<IdentityUser> userManager,
             RoleManager<IdentityRole> roleManager,
-            IDepartmentRepository departmentRepository,
-            IEmployeeRepository employeeRepository
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _departmentRepository = departmentRepository;
-            _employeeRepository = employeeRepository;
         }
-        
 
+
+        public List<IdentityUser> GetAlUsers()
+        {
+            return _userManager.Users.ToList();
+        }
         public async Task<string> AddUserManager(Employee employee)
         {
             string email = GenerateEmail(employee.Name, employee.Surname);

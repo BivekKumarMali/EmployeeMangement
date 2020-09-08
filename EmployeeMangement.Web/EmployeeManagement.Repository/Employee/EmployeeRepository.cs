@@ -18,13 +18,11 @@ namespace EmployeeMangement.Web.Repository
     public class EmployeeRepository : IEmployeeRepository
     {
         private AppDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
 
-        public EmployeeRepository(AppDbContext context, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EmployeeRepository(AppDbContext context, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
-            _userManager = userManager;
             _roleManager = roleManager;
         }
 

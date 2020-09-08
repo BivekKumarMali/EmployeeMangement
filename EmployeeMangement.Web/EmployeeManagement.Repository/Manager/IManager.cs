@@ -11,6 +11,8 @@ namespace EmployeeMangement.Web.Repository
 {
     public interface IManager
     {
+
+        List<IdentityUser> GetAlUsers();
         Task<string> AddUserManager(Employee employee);
         Task<bool> UpdateUserManager(Employee employee);
         Task<bool> DeleteUserManager(string userId);
@@ -26,7 +28,7 @@ namespace EmployeeMangement.Web.Repository
         Task<bool> UserRoleExist(string roleId, string userId);
 
 
-        Task<IdentityRole> GetRoleByName(string departmentName);
+        Task<IdentityRole> GetRoleByName(string Name);
         Task<IdentityRole> GetRoleById(string id);
         Task<IdentityUser> GetUserById(string id);
         Task<IdentityUser> GetUserByEmail(string email);

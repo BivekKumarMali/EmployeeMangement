@@ -47,7 +47,9 @@ namespace EmployeeMangement.Web
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
-            
+
+
+            services.AddScoped<IPredefined, Predefined>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IValidationRepository, ValidationRepository>();
