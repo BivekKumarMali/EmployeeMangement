@@ -7,6 +7,7 @@ namespace EmployeeMangement.Web.Repository
 {
     public interface IPredefined
     {
-        Task<bool> AddDefaulUser();
+        Task<bool> AddDefaulAdminUser();
+        Task<bool> AddDefaulHRUser();
     }
 }

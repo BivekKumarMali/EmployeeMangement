@@ -25,7 +25,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         public async Task<ActionResult> Login([Bind("Email,Password")] LogInViewModel logInViewModel)
         {
-            if (!await _predefined.AddDefaulUser())
+            if (!await _predefined.AddDefaulAdminUser() && !await _predefined.AddDefaulHRUser())
             {
                 if (ModelState.IsValid && logInViewModel.Email != null)
                 {

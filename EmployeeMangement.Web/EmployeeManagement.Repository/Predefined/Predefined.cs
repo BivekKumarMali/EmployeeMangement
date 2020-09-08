@@ -25,7 +25,7 @@ namespace EmployeeMangement.Web.Repository
             return await _manager.GetRoleByName("Admin") != null;
         }
         
-        public async Task<string> AddDefaulRole()
+        public async Task<string> AddDefaulAdminRole()
         {
             IdentityRole identityRole = new IdentityRole();
             if (!await CheckAdminRole())
@@ -37,17 +37,48 @@ namespace EmployeeMangement.Web.Repository
             return identityRole.Id;
         }
 
-        public async Task<bool> AddDefaulUser()
+        public async Task<bool> AddDefaulAdminUser()
         {
-            if(_manager.GetAllRoles().Count < 1)
+            if(_manager.GetAlUsers().Count < 2)
             {
                 Employee employee = _context.Employees.Find(1);
-                employee.RoleId = await AddDefaulRole();
+                employee.RoleId = await AddDefaulAdminRole();
                 employee.UserId = await _manager.AddUserManager(employee);
                 _context.Employees.Update(employee);
                 _context.SaveChanges();
             }
             return false;
+        }
+
+
+        public async Task<bool> AddDefaulHRUser()
+        {
+            if (_manager.GetAlUsers().Count < 2)
+            {
+                Employee employee = _context.Employees.Find(2);
+                employee.RoleId = await AddDefaulHRRole();
+                employee.UserId = await _manager.AddUserManager(employee);
+                _context.Employees.Update(employee);
+                _context.SaveChanges();
+            }
+            return false;
+        }
+
+        private async Task<string> AddDefaulHRRole()
+        {
+            IdentityRole identityRole = new IdentityRole();
+            if (!await CheckHRRole())
+            {
+                identityRole = new IdentityRole { Name = "HR" };
+                await _manager.AddRoleManager(identityRole);
+            }
+            identityRole = await _manager.GetRoleByName("HR");
+            return identityRole.Id;
+        }
+
+        private async Task<bool> CheckHRRole()
+        {
+            return await _manager.GetRoleByName("HR") != null;
         }
     }
 }
