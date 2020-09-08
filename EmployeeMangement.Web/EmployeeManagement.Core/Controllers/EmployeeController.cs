@@ -78,7 +78,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did,UserID")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did,UserId,RoleId")] Employee employee)
         {
             if (id != employee.Eid)
             {

@@ -89,7 +89,6 @@ namespace EmployeeMangement.Web.Repository
             return result.Succeeded;
         }
 
-        // Incomplete
         public async Task<bool> UpdateUserRole(string roleId, string userId)
         {
             if(!await UserRoleExist(roleId, userId))
