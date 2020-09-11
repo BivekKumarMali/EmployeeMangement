@@ -3,6 +3,7 @@ using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,11 +18,13 @@ namespace EmployeeMangement.Web.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private AppDbContext _context;
+        private AppDbContext _context; 
+        private readonly IHubContext<SignalServer> _notificationContext;
         private RoleManager<IdentityRole> _roleManager;
 
-        public EmployeeRepository(AppDbContext context, RoleManager<IdentityRole> roleManager)
+        public EmployeeRepository(AppDbContext context, RoleManager<IdentityRole> roleManager, IHubContext<SignalServer> notificationContext)
         {
+            _notificationContext = notificationContext;
             _context = context;
             _roleManager = roleManager;
         }
@@ -90,8 +93,11 @@ namespace EmployeeMangement.Web.Repository
             return new List<IdentityRole>(_roleManager.Roles.ToList());
         }
 
-        
+        private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
+        {
+            _notificationContext.Clients.All.SendAsync("refreshEmployees");
+        }
 
-       
+
     }
 }
