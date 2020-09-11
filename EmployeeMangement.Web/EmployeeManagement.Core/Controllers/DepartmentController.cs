@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,HR")]
     public class DepartmentController : Controller
     {
         private readonly AppDbContext _context;
@@ -37,6 +37,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
             return View(_departmentViewModel);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Add([Bind("Did,DepartmentName,RoleId")] Department department)
         {
             department.DepartmentName = department.DepartmentName.Trim();
@@ -55,6 +56,7 @@ namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             Department department = _departmentRepository.GetDepartmentById(id);
