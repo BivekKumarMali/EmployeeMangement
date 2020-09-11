@@ -182,3 +182,4 @@ C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMa
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeMangement.Web.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\Razor\Views\Account\ForgetPassword.cshtml.g.cs
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\Razor\Views\Roles\Index.cshtml.g.cs
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\Razor\Views\Home\Profile.cshtml.g.cs

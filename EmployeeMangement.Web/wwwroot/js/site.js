@@ -25,3 +25,7 @@ function CheckPassword() {
         document.getElementById("Error").hidden = "true";
     }
 }
+
+function Enabled() {
+    $("#Enable :input").prop("disabled", false); 
+}

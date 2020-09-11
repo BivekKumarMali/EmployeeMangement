@@ -21,6 +21,7 @@ namespace EmployeeMangement.Web.Controllers
         private readonly IValidationRepository _validation;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmployeeRepository _employeeRepository;
+
         public HomeController(ILogger<HomeController> loggers, IValidationRepository validation, UserManager<IdentityUser> userManager, IEmployeeRepository employeeRepository)
         {
             _logger = loggers;
@@ -45,6 +46,21 @@ namespace EmployeeMangement.Web.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Profile(Employee employee)
+        {
+            if(employee.Eid != 0)
+            {
+                _employeeRepository.AddEmployee(employee);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                employee = await _employeeRepository.GetEmployeeByUserId(user.Id);
+                return View(employee);
+            }
         }
 
         
