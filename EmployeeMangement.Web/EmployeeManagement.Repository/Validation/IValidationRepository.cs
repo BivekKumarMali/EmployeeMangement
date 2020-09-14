@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web.Repository
+namespace EmployeeManagement.Web.Repository
 {
     public interface IValidationRepository
     {

@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using EmployeeManagement.Web.Models;
-using EmployeeMangement.Web.Models;
-using EmployeeMangement.Web.Repository;
+using EmployeeManagement.Web.Models;
+using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web.Repository
+namespace EmployeeManagement.Web.Repository
 {
     public class DepartmentRepository : IDepartmentRepository
     {

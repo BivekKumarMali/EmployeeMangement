@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web.Models
+namespace EmployeeManagement.Web.Models
 {
     public class AppDbContext : IdentityDbContext
     {
@@ -16,6 +16,7 @@ namespace EmployeeMangement.Web.Models
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

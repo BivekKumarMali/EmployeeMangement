@@ -9148,9 +9148,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\EmployeeMangement.Web.csproj",
-      "projectName": "EmployeeMangement.Web",
-      "projectPath": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\EmployeeMangement.Web.csproj",
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\EmployeeManagement.Web.csproj",
+      "projectName": "EmployeeManagement.Web",
+      "projectPath": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\EmployeeManagement.Web.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\obj\\",
       "projectStyle": "PackageReference",

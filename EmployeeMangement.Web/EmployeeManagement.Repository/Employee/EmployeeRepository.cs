@@ -1,5 +1,5 @@
 ﻿using EmployeeManagement.Web.Models;
-using EmployeeMangement.Web.Models;
+using EmployeeManagement.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web.Repository
+namespace EmployeeManagement.Web.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {

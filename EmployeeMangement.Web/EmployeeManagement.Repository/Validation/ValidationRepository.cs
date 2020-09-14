@@ -1,12 +1,12 @@
 ﻿using EmployeeManagement.Web.Models;
-using EmployeeMangement.Web.Models;
+using EmployeeManagement.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web.Repository
+namespace EmployeeManagement.Web.Repository
 {
     public class ValidationRepository : IValidationRepository
     {

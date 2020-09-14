@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.ViewModel;
-using EmployeeMangement.Web.Repository;
+using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

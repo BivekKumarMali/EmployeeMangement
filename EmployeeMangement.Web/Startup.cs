@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Web.Models;
-using EmployeeMangement.Web.Models;
-using EmployeeMangement.Web.Repository;
+using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
-namespace EmployeeMangement.Web
+namespace EmployeeManagement.Web
 {
     public class Startup
     {

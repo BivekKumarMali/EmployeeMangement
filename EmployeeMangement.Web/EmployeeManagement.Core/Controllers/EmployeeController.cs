@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Web.Models;
-using EmployeeMangement.Web.Models;
-using EmployeeMangement.Web.Repository;
+using EmployeeManagement.Web.Models;
+using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using EmployeeManagement.Web.ViewModel;
 
-namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
+namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
     [Authorize(Roles = "Admin,HR")]
     public class EmployeeController : Controller

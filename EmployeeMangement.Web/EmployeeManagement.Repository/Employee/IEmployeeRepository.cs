@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web.Repository
+namespace EmployeeManagement.Web.Repository
 {
     public interface IEmployeeRepository
     {

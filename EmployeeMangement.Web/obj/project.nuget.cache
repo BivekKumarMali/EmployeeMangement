@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UH0bAHKQFPy0ixH1e7oz+UcvqyP/Yezj3I9faTQ34qARLD24jdXx7glDMxXTtPEHmjSFgflokJqSZzZMi+cLEg==",
+  "dgSpecHash": "V5D6vgIUluJnDHyIA1VdEwPrTzu59wtKTm5JUimV8xu8n557C7aOB7YUxbhjxasHHIuNx5h6ELcANMwaEJjz2A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\EmployeeMangement.Web.csproj",
+  "projectFilePath": "C:\\Users\\User\\Desktop\\Promact\\Assginment\\27_08_2020\\EmployeeMangement\\EmployeeMangement.Web\\EmployeeManagement.Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\User\\.nuget\\packages\\dapper\\2.0.35\\dapper.2.0.35.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.7\\microsoft.aspnetcore.cryptography.internal.3.1.7.nupkg.sha512",

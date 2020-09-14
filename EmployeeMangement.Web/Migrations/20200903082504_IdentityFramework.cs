@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace EmployeeMangement.Web.Migrations
+namespace EmployeeManagement.Web.Migrations
 {
     public partial class IdentityFramework : Migration
     {

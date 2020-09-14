@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.ViewModel;
-using EmployeeMangement.Web.Repository;
+using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EmployeeMangement.Web.EmployeeManagement.Core.Controllers
+namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
     public class AccountController : Controller
     {

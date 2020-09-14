@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using EmployeeManagement.Web;
 using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.ViewModel;
-using EmployeeMangement.Web.Repository;
+using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace EmployeeMangement.Web.Controllers
+namespace EmployeeManagement.Web.Controllers
 {
     [Authorize]
     public class HomeController : Controller

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EmployeeMangement.Web
+namespace EmployeeManagement.Web
 {
     public class SignalServer: Hub
     {
