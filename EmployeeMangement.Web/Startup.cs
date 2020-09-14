@@ -52,11 +52,14 @@ namespace EmployeeManagement.Web
 
 
             services.AddScoped<IPredefined, Predefined>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IValidationRepository, ValidationRepository>();
             services.AddScoped<IManager, Manager>();
 
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,6 +86,12 @@ namespace EmployeeManagement.Web
             app.UseRouting();
 
             app.UseAuthorization();
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            app.UseSignalR(route => {
+                route.MapHub<SignalServer>("/signalServer");
+            });
+#pragma warning restore CS0618 // Type or member is obsolete
 
             app.UseEndpoints(endpoints =>
             {

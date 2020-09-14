@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using EmployeeManagement.Web.Models;
-using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;

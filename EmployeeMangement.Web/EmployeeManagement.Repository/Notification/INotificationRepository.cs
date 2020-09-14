@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Web.Repository
 {
-    interface INotificationRepository
+    public interface INotificationRepository
     {
-        Task<IEnumerable<Notification>> GetNotifications();
-        Task<IEnumerable<Notification>> GetNotificationsByDid();
+        IEnumerable<Notification> GetNotifications();
+        IEnumerable<Notification> GetNotificationsByDid(int Did);
 
-        void AddNotification(Notification notification);
+
+        Task AddDepartmentNotification();
+        Task EditDepartmentNotification();
+        Task AddEmployeeNotification(string name, int Did);
+        Task EditEmployeeNotification(string name, int Did);
     }
 }

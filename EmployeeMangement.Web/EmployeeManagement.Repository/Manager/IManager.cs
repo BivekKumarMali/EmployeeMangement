@@ -36,5 +36,6 @@ namespace EmployeeManagement.Web.Repository
 
         Task<bool> UpdatePassword(PasswordResetView passwordResetView);
 
+
     }
 }

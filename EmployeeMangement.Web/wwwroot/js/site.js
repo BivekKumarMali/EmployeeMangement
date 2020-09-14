@@ -29,3 +29,55 @@ function CheckPassword() {
 function Enabled() {
     $("#Enable :input").prop("disabled", false); 
 }
+
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
+
+
+
+    function getNotification() {
+        var res = "<ul class='list-group'>";
+        $.ajax({
+            url: "/Home/Notification",
+            method: "GET",
+            success: function (result) {
+
+                if (result.count != 0) {
+                    $("#notificationCount").html(result.count);
+                    $("#notificationCount").show('slow');
+                } else {
+                    $("#notificationCount").html();
+                    $("#notificationCount").hide('slow');
+                    $("#notificationCount").popover('hide');
+                }
+
+                var notifications = result.userNotification;
+                notifications.forEach(element => {
+                    res = res + "<li class='list-group-item notification-text' data-id='" + element.notification.id + "'>" + element.notification.text + "</li>";
+                });
+
+                res = res + "</ul>";
+
+                $("#notification-content").html(res);
+
+                console.log(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    getNotification();
+
+    let connection = new signalR.HubConnection("/signalServer");
+
+    connection.on('displayNotification', () => {
+        getNotification();
+    });
+
+    connection.start();
+
+});

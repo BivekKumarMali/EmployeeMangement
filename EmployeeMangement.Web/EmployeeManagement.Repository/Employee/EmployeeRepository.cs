@@ -1,5 +1,4 @@
 ﻿using EmployeeManagement.Web.Models;
-using EmployeeManagement.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

@@ -21,25 +21,32 @@ namespace EmployeeManagement.Web.Controllers
         private readonly IValidationRepository _validation;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly INotificationRepository _notificationRepository;
 
-        public HomeController(ILogger<HomeController> loggers, IValidationRepository validation, UserManager<IdentityUser> userManager, IEmployeeRepository employeeRepository)
+        public HomeController
+            (
+                ILogger<HomeController> loggers,
+                IValidationRepository validation,
+                UserManager<IdentityUser> userManager,
+                IEmployeeRepository employeeRepository,
+                INotificationRepository notificationRepository
+            )
         {
             _logger = loggers;
             _validation = validation;
             _userManager = userManager;
             _employeeRepository = employeeRepository;
-
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<IActionResult> Index()
         {
-            var user = _userManager.GetUserAsync(HttpContext.User).Result;
-            Employee employee =await _employeeRepository.GetEmployeeByUserId(user.Id);
-            if(User.IsInRole("Admin") || User.IsInRole("HR"))
+            int Did = await CheckUserRole();
+            if (Did == 0)
             {
                 return RedirectToAction("Index","Employee");
             }
-                return View(await _employeeRepository.FilterEmployee(employee.Did));
+                return View(await _employeeRepository.FilterEmployee(Did));
             
         }
 
@@ -62,8 +69,32 @@ namespace EmployeeManagement.Web.Controllers
                 return View(employee);
             }
         }
+        [HttpGet]
+        public async Task<IActionResult> Notification()
+        {
+            NotificationViewModel notificationViewModel = new NotificationViewModel();
+            int Did = await CheckUserRole();
+            if (Did == 0)
+            {
+                notificationViewModel.Notifications = _notificationRepository.GetNotifications();
+            }
+            else
+            {
+                notificationViewModel.Notifications = _notificationRepository.GetNotificationsByDid(Did);
+            }
 
-        
+            return Ok (new { UserNotification = notificationViewModel.Notifications , Count = notificationViewModel.Notifications.Count() });
+        }
+
+        public async Task<int> CheckUserRole()
+        {
+            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            Employee employee = await _employeeRepository.GetEmployeeByUserId(user.Id);
+            if (User.IsInRole("Admin") || User.IsInRole("HR"))
+                return 0;
+            else return employee.Did;
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

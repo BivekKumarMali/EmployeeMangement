@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Web.Models;
-using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.Repository;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using EmployeeManagement.Web.ViewModel;
+using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
@@ -21,13 +17,24 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IManager _manager;
         private readonly EmployeeViewModel employeeViewModel;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly INotificationRepository _notificationRepository;
 
-        public EmployeeController(AppDbContext context, IEmployeeRepository employeeRepository, IManager manager)
+        public EmployeeController
+            (
+                AppDbContext context,
+                IEmployeeRepository employeeRepository,
+                IManager manager,
+                UserManager<IdentityUser> userManager,
+                INotificationRepository notificationRepository
+            )
         {
             _context = context;
             _employeeRepository = employeeRepository;
             _manager = manager;
             employeeViewModel = new EmployeeViewModel();
+            _userManager = userManager;
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -52,6 +59,12 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 if(employee.UserId != null)
                 {
                     _employeeRepository.AddEmployee(employee);
+
+                    var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                    Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(user.Id);
+
+                    await _notificationRepository.AddEmployeeNotification(currentEmployee.Name + " "+ currentEmployee.Surname, employee.Did);
+
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -93,6 +106,12 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                     if (await _manager.UpdateUserManager(employee))
                     {
                         _employeeRepository.UpdateEmployee(employee);
+
+
+                        var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                        Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(user.Id);
+
+                        await _notificationRepository.EditEmployeeNotification(currentEmployee.Name + " "+ currentEmployee.Surname, employee.Did);
                     }
                 }
                 catch (DbUpdateConcurrencyException)
