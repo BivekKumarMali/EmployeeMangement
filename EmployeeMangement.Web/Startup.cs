@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EmployeeManagement.Web.Models;
@@ -8,6 +9,7 @@ using EmployeeMangement.Web.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -15,6 +17,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace EmployeeMangement.Web
@@ -55,7 +58,6 @@ namespace EmployeeMangement.Web
             services.AddScoped<IValidationRepository, ValidationRepository>();
             services.AddScoped<IManager, Manager>();
 
-            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +75,8 @@ namespace EmployeeMangement.Web
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+           
             app.UseAuthentication();
 
 

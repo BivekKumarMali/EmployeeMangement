@@ -1,14 +1,8 @@
-﻿using Dapper;
-using EmployeeManagement.Web.Models;
+﻿using EmployeeManagement.Web.Models;
 using EmployeeMangement.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -18,22 +12,23 @@ namespace EmployeeMangement.Web.Repository
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private AppDbContext _context; 
-        private readonly IHubContext<SignalServer> _notificationContext;
+        private AppDbContext _context;
         private RoleManager<IdentityRole> _roleManager;
 
-        public EmployeeRepository(AppDbContext context, RoleManager<IdentityRole> roleManager, IHubContext<SignalServer> notificationContext)
+        public EmployeeRepository(AppDbContext context, RoleManager<IdentityRole> roleManager)
         {
-            _notificationContext = notificationContext;
             _context = context;
             _roleManager = roleManager;
         }
 
         public async Task<IEnumerable<Employee>> GetAllEmployees()
         {
-            var joinDbContext = _context.Employees.Include(e => e.Department);
+             var joinDbContext = _context.Employees.Include(e => e.Department);
             return await joinDbContext.ToListAsync();
         }
+
+        
+
         public Employee GetEmployeeById(int? Eid)
         {
             return _context.Employees.Find(Eid);
@@ -93,10 +88,6 @@ namespace EmployeeMangement.Web.Repository
             return new List<IdentityRole>(_roleManager.Roles.ToList());
         }
 
-        private void dbChangeNotification(object sender, SqlNotificationEventArgs e)
-        {
-            _notificationContext.Clients.All.SendAsync("refreshEmployees");
-        }
 
 
     }
