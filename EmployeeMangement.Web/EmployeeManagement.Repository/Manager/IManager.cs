@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Web.Repository
@@ -35,6 +36,8 @@ namespace EmployeeManagement.Web.Repository
 
 
         Task<bool> UpdatePassword(PasswordResetView passwordResetView);
+
+        string GetUserID(ClaimsPrincipal claimsPrincipal);
 
 
     }

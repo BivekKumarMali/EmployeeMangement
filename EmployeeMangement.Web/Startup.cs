@@ -87,17 +87,13 @@ namespace EmployeeManagement.Web
 
             app.UseAuthorization();
 
-#pragma warning disable CS0618 // Type or member is obsolete
-            app.UseSignalR(route => {
-                route.MapHub<SignalServer>("/signalServer");
-            });
-#pragma warning restore CS0618 // Type or member is obsolete
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<SignalServer>("/signalServer");
             });
         }
     }

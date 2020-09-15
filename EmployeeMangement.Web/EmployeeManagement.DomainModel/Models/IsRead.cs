@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace EmployeeManagement.Web.Models
 {
-    public class Notification
+    public class IsRead
     {
         [Key]
+        public int Rid { get; set; }
+        [ForeignKey("AspNetUsers")]
+        public string UserId { get; set; }
+        [ForeignKey("Notifications")]
         public int Nid { get; set; }
-        public string Name { get; set; }
-        public string Date { get; set; }
-        public string Action { get; set; }
-        [ForeignKey("Departments")]
-        public int Did { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EmployeeManagement.Web.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,46 @@ namespace EmployeeManagement.Web.Repository
     public class NotificationRepository : INotificationRepository
     {
         private AppDbContext _context { get; set; }
+        private IHubContext<SignalServer> _hubContext;
 
-        public NotificationRepository(AppDbContext context)
+        public NotificationRepository(AppDbContext context, IHubContext<SignalServer> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
-        public async Task AddNotification(Notification notification)
+        
+
+        public IEnumerable<Notification> GetNotifications(string userId)
         {
-            await _context.Notifications.AddAsync(notification);
-            await _context.SaveChangesAsync();
+            var notifications = _context.Notifications.ToList();
+            var reads = _context.IsReads.ToList();
+
+            foreach (var read in reads)
+            {
+                if(read.UserId == userId)
+                {
+                    Notification notification = _context.Notifications.Find(read.Nid);
+                    notifications.Remove(notification);
+                }
+            }
+            return notifications;
         }
 
-        public IEnumerable<Notification> GetNotifications()
+        public IEnumerable<Notification> GetNotificationsByDid(int Did,string userId)
         {
-            return _context.Notifications.ToList();
-        }
 
-        public IEnumerable<Notification> GetNotificationsByDid(int Did)
-        {
-            return _context.Notifications.ToList().Where(x => x.Did == Did);
+            var notifications = _context.Notifications.ToList();
+            var reads = _context.IsReads.ToList();
+
+            foreach (var read in reads)
+            {
+                if (read.UserId == userId)
+                {
+                    Notification notification = _context.Notifications.Find(read.Nid);
+                    notifications.Remove(notification);
+                }
+            }
+            return notifications.Where(x => x.Did == Did);
         }
 
         public async Task AddDepartmentNotification()
@@ -40,7 +62,7 @@ namespace EmployeeManagement.Web.Repository
                 Date = DateTime.Now.ToString(),
                 Did = 0
             };
-            await AddNotification(notification);
+             AddNotification(notification);
         }
 
         public async Task EditDepartmentNotification()
@@ -52,32 +74,68 @@ namespace EmployeeManagement.Web.Repository
                 Date = DateTime.Now.ToString(),
                 Did = 0
             };
-            await AddNotification(notification);
+             AddNotification(notification);
         }
 
-        public async Task AddEmployeeNotification(string name, int Did)
+        public async Task AddEmployeeNotification(Employee employee)
         {
             Notification notification = new Notification
             {
-                Name = ""+ name,
+                Name = employee.Name +" "+ employee.Surname,
                 Action = "Added",
                 Date = DateTime.Now.ToString(),
-                Did = Did
+                Did = employee.Did
             };
-            await AddNotification(notification);
+             AddNotification(notification);
         }
 
-        public async Task EditEmployeeNotification(string name, int Did)
+        public async Task EditEmployeeNotification(Employee employee)
         {
             Notification notification = new Notification
             {
-                Name = "" + name,
+                Name = employee.Name + " " + employee.Surname,
                 Action = "Edit",
                 Date = DateTime.Now.ToString(),
-                Did = Did
+                Did = employee.Did
             };
-            await AddNotification(notification);
+             AddNotification(notification);
         }
+
+        public void DeleteDepartmentNotification()
+        {
+            Notification notification = new Notification
+            {
+                Name = "Department",
+                Action = "Delete",
+                Date = DateTime.Now.ToString(),
+                Did = 0
+            };
+            AddNotification(notification);
+        }
+
+        public Task DeleteEmployeeNotification(Employee employee)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void IsReadNotification(int nid, string userId)
+        {
+            IsRead read = new IsRead
+            {
+                Nid = nid,
+                UserId = userId
+            };
+            _context.IsReads.Add(read);
+            _context.SaveChanges();
+        }
+
+        public void AddNotification(Notification notification)
+        {
+            _context.Notifications.Add(notification);
+            _hubContext.Clients.All.SendAsync("displayNotification");
+            _context.SaveChanges();
+        }
+
 
         
     }

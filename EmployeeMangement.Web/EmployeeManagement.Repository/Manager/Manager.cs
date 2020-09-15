@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace EmployeeManagement.Web.Repository
@@ -164,5 +165,10 @@ namespace EmployeeManagement.Web.Repository
             return deleteRoleStatus.Succeeded;
         }
 
+        public string GetUserID(ClaimsPrincipal claimsPrincipal)
+        {
+            IdentityUser user = _userManager.GetUserAsync(claimsPrincipal).Result;
+            return user.Id;
+        }
     }
 }

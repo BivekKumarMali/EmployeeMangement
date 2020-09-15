@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.Repository;
 using EmployeeManagement.Web.ViewModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
@@ -64,6 +61,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             Department department = _departmentRepository.GetDepartmentById(id);
 
             _departmentRepository.DeleteDepartment(id);
+            _notificationRepository.DeleteDepartmentNotification();
 
             return RedirectToAction(nameof(Index));
         }

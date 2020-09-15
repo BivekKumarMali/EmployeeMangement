@@ -60,10 +60,10 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 {
                     _employeeRepository.AddEmployee(employee);
 
-                    var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                    Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(user.Id);
+                    string userID = _manager.GetUserID(HttpContext.User);
+                    Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(userID);
 
-                    await _notificationRepository.AddEmployeeNotification(currentEmployee.Name + " "+ currentEmployee.Surname, employee.Did);
+                    await _notificationRepository.AddEmployeeNotification(employee);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -107,11 +107,10 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                     {
                         _employeeRepository.UpdateEmployee(employee);
 
+                        string userID = _manager.GetUserID(HttpContext.User);
+                        Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(userID);
 
-                        var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                        Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(user.Id);
-
-                        await _notificationRepository.EditEmployeeNotification(currentEmployee.Name + " "+ currentEmployee.Surname, employee.Did);
+                        await _notificationRepository.EditEmployeeNotification(employee);
                     }
                 }
                 catch (DbUpdateConcurrencyException)

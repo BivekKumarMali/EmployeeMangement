@@ -33,8 +33,15 @@ function Enabled() {
 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover();
+    $('[data-toggle="popover"]').popover({
+        placement: 'bottom',
+        content: function () {
+            return $("#notification-content").html();
+        },
+        html: true
+    });
 
+    $('body').append(`<div id="notification-content" class="hide"></div>`)
 
 
     function getNotification() {
@@ -44,18 +51,12 @@ $(function () {
             method: "GET",
             success: function (result) {
 
-                if (result.count != 0) {
                     $("#notificationCount").html(result.count);
-                    $("#notificationCount").show('slow');
-                } else {
-                    $("#notificationCount").html();
-                    $("#notificationCount").hide('slow');
-                    $("#notificationCount").popover('hide');
-                }
+                
 
                 var notifications = result.userNotification;
                 notifications.forEach(element => {
-                    res = res + "<li class='list-group-item notification-text' data-id='" + element.notification.id + "'>" + element.notification.text + "</li>";
+                    res = res + "<li class='list-group-item  notification'  id='" + element.nid + "'>" + element.action + " " + element.name + " on " + element.date + "</li>";
                 });
 
                 res = res + "</ul>";
@@ -70,11 +71,39 @@ $(function () {
         });
     }
 
+    $(document).on('click', '.notification', function (e) {
+        console.log(this.id);
+        var target = e.target;
+        readNotification(this.id, target);
+    })
+
+    function readNotification(id, target) {
+        $.ajax({
+            url: "/Home/ReadNotification",
+            method: "POST",
+            data: { Nid: id },
+            success: function (result) {
+                getNotification();
+                $(target).fadeOut('slow');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
     getNotification();
 
-    let connection = new signalR.HubConnection("/signalServer");
 
-    connection.on('displayNotification', () => {
+    
+
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/signalServer")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
+
+    connection.on("displayNotification", () => {
         getNotification();
     });
 

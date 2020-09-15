@@ -78,3 +78,18 @@ body {
     cursor: pointer;
 
 }
+
+.notification {
+    cursor: pointer;
+}
+.notification:hover,
+.notification:focus {
+        background-color: indianred;
+    }
+
+.hide{
+    display: none;
+}
+
+ul li.notification:hover{
+}

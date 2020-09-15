@@ -20,39 +20,39 @@
                 </button>
                 @if (signInManager.IsSignedIn(User))
                 {
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if ((signInManager.IsSignedIn(User)) && ((User.IsInRole("Admin")) || (User.IsInRole("HR"))))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
-                            </li>
-
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Department</a>
-                            </li>
-
-                            @if ((signInManager.IsSignedIn(User)) && ((User.IsInRole("Admin"))))
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <ul class="navbar-nav flex-grow-1">
+                            @if ((signInManager.IsSignedIn(User)) && ((User.IsInRole("Admin")) || (User.IsInRole("HR"))))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                                    <a class="nav-link text-dark text" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
                                 </li>
+
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Department</a>
+                                </li>
+
+                                @if ((signInManager.IsSignedIn(User)) && ((User.IsInRole("Admin"))))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+                                    </li>
+                                }
                             }
-                        }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Home" asp-action="Profile">Profile</a>
-                        </li>
-                        <li>
-                            <span class="badge notification-count" id="notificationCount" data-toggle="popover" title="Notifications"></span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="float-right">
-                    <form method="post" asp-action="Logout" asp-controller="Home">
-                        <button type="submit" class="btn btn-dark" asp-controller="Account" asp-action="Logout">Logout @User.Identity.Name</button>
-                    </form>
-                </div>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Profile">Profile</a>
+                            </li>
+                            <li>
+                                <span class="badge notification-count" id="notificationCount" data-toggle="popover" title="Notifications"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="float-right">
+                        <form method="post" asp-action="Logout" asp-controller="Home">
+                            <button type="submit" class="btn btn-dark" asp-controller="Account" asp-action="Logout">Logout @User.Identity.Name</button>
+                        </form>
+                    </div>
                 }
             </div>
         </nav>
@@ -71,7 +71,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/signalr/dist/browser/signalr.js" ></script>
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/signalr2/dist/browser/signalr.js"></script>
+    <script src="~/js/signalr2/dist/browser/signalr.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

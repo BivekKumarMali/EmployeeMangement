@@ -153,8 +153,6 @@ C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMa
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.csprojAssemblyReference.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.AssemblyInfoInputs.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.AssemblyInfo.cs
-C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.csproj.CoreCompileInputs.cache
-C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.RazorAssemblyInfo.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.RazorAssemblyInfo.cs
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.TagHelpers.input.cache
@@ -184,3 +182,6 @@ C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMa
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.dll
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.pdb
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.genruntimeconfig.cache
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.MvcApplicationPartsAssemblyInfo.cache
