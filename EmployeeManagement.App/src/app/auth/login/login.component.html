@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4 box shadow p-3 mb-5 bg-white rounded">
+      <p>Admin Email: admindefault@gmail.com</p>
+      <p>HR Email: hrdefault@gmail.com</p>
+      <p>Default password: 12345</p>
+      <form #form="ngForm" (ngSubmit)="ToLogin(form)">
+        <div class="form-group">
+          <input type="email" id="email" class="form-control" name="email" autocomplete="off" required ngModel
+            placeholder="Enter Your Email" email />
+        </div>
+        <div class="form-group">
+          <input type="password" id="Password" class="form-control" name="password" autocomplete="off" required ngModel
+            placeholder="Enter Your Password" />
+        </div>
+        <div class="form-group">
+          <button type="submit" value="Login" class="btn btn-primary" [disabled]="form.invalid">
+            Login <i class="fa fa-sign-in" aria-hidden="true"></i>
+          </button>
+        </div>
+        <a value="forgetpassword" [routerLink]="['forgetpassword']"
+          routerLinkActive="router-link-active">ForgetPassword</a>
+      </form>
+    </div>
+  </div>
+</div>
