@@ -1,1 +1,42 @@
-<p>employee-list works!</p>
+<p>
+  <a [routerLink]="['0/edit']" routerLinkActive="router-link-active">Add New Employee</a>
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Heading</th>
+      <th>Heading</th>
+      <th>Heading</th>
+      <th>Heading</th>
+      <th>Heading</th>
+      <th>Heading</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+      <td>
+        Test
+      </td>
+      <td>
+        <a asp-action="Edit">Edit</a> |
+        <a class="btn btn-outline-danger">Delete</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

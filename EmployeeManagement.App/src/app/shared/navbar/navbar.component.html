@@ -1,7 +1,7 @@
 <header>
   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-      <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Employee Mangement</a>
+      <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active">Employee Mangement</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -9,18 +9,19 @@
       <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
         <ul class="navbar-nav flex-grow-1">
           <li class="nav-item">
-            <a class="nav-link text-dark text" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
-          </li>
-
-
-          <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Department</a>
+            <a class="nav-link text-dark text" [routerLink]="['/home']"
+              routerLinkActive="router-link-active">Employee</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Roles" asp-action="Index">Roles</a>
+            <a class="nav-link text-dark" [routerLink]="['/home/department']"
+              routerLinkActive="router-link-active">Department</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Home" asp-action="Profile">Profile</a>
+            <a class="nav-link text-dark" [routerLink]="['/roles']" routerLinkActive="router-link-active">Roles</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" [routerLink]="['/home/profile']"
+              routerLinkActive="router-link-active">Profile</a>
           </li>
           <li>
             <span class="badge notification-count" id="notificationCount" data-toggle="popover"
@@ -34,7 +35,6 @@
             Name</button>
         </form>
       </div>
-      }
     </div>
   </nav>
 </header>
