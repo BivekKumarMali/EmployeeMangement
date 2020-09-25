@@ -10,7 +10,7 @@ const routes: Routes = [
     path: 'login',
     data: { preload: false },
     loadChildren: () =>
-      import('./auth/auth.module').then(m => m.AuthModule)
+      import('./authentication/authentication.module').then(m => m.AuthenticationModule)
   },
   {
     path: 'home', component: HomeComponent,
