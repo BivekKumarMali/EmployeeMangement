@@ -7,11 +7,15 @@ using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.Repository;
 using EmployeeManagement.Web.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using System.Web.Http.Cors;
 
 namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [Authorize(Roles = "Admin,HR")]
-    public class DepartmentController : Controller
+    public class DepartmentController : ControllerBase
     {
         private readonly AppDbContext _context;
         private readonly IDepartmentRepository _departmentRepository;
@@ -28,11 +32,10 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             _notificationRepository = notificationRepository;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IEnumerable<Department>> Index()
         {
-            _departmentViewModel.Departments = await _departmentRepository.GetAllDepartments();
-            _departmentViewModel.Department = _departmentRepository.ResetDepartment();
-            return View(_departmentViewModel);
+            return await _departmentRepository.GetAllDepartments();
         }
 
         [Authorize(Roles = "Admin")]

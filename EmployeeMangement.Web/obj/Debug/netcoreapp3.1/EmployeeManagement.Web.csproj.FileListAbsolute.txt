@@ -183,5 +183,10 @@ C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMa
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.pdb
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.genruntimeconfig.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\System.Net.WebSockets.WebSocketProtocol.dll
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\System.Web.Cors.dll
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\System.Web.Http.dll
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\System.Web.Http.Cors.dll
+C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\Promact\Assginment\27_08_2020\EmployeeMangement\EmployeeMangement.Web\obj\Debug\netcoreapp3.1\EmployeeManagement.Web.MvcApplicationPartsAssemblyInfo.cache

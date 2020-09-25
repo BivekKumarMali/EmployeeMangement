@@ -1,5 +1,8 @@
 <div class="row">
   <div class="col-md-6 table-responsive">
+    <div class="text-danger alert alert-danger" *ngIf="errorMessage">
+      Server Failure
+    </div>
     <table class="table table-bordered">
       <thead>
         <tr>
