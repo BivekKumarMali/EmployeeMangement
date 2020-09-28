@@ -1,38 +1,27 @@
 <p>
   <a [routerLink]="['0/edit']" routerLinkActive="router-link-active">Add New Employee</a>
 </p>
+<div class="text-danger alert alert-danger" *ngIf="errorMessage">Server Problem</div>
 <table class="table">
   <thead>
     <tr>
-      <th>Heading</th>
-      <th>Heading</th>
-      <th>Heading</th>
-      <th>Heading</th>
-      <th>Heading</th>
-      <th>Heading</th>
+      <th>Name</th>
+      <th>Surname</th>
+      <th>Address</th>
+      <th>Qualification</th>
+      <th>ContactNumber</th>
+      <th>Department</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>
-        Test
-      </td>
-      <td>
-        Test
-      </td>
-      <td>
-        Test
-      </td>
-      <td>
-        Test
-      </td>
-      <td>
-        Test
-      </td>
-      <td>
-        Test
-      </td>
+    <tr *ngFor="let e of employees">
+      <td>{{e.name}}</td>
+      <td>{{e.surname}}</td>
+      <td>{{e.address}}</td>
+      <td>{{e.qualification}}</td>
+      <td>{{e.contactNumber}}</td>
+      <td>{{e.department.departmentName}}</td>
       <td>
         <a asp-action="Edit">Edit</a> |
         <a class="btn btn-outline-danger">Delete</a>

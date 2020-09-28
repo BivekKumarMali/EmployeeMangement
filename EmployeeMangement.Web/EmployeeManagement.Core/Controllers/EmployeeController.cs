@@ -7,10 +7,15 @@ using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Authorization;
 using EmployeeManagement.Web.ViewModel;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.Web.Http.Cors;
 
 namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
-    [Authorize(Roles = "Admin,HR")]
+
+    [ApiController]
+    [Route("[controller]")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
@@ -37,9 +42,21 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             _notificationRepository = notificationRepository;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IEnumerable<Employee>> Index()
         {
-            return View(await _employeeRepository.GetAllEmployees());
+            return await _employeeRepository.GetAllEmployees();
+        }
+        [HttpGet]
+        public async Task<IEnumerable<Employee>> GetEmployees()
+        {
+            return await _employeeRepository.GetAllEmployees();
+        }
+
+        [HttpGet("{Did}")]
+        public async Task<IEnumerable<Employee>> GetEmployeesByDepartmentID(int Did)
+        {
+            IEnumerable<Employee> Employees = await _employeeRepository.GetAllEmployees();
+            return Employees.Where(e => e.Did == Did);
         }
 
         public IActionResult Create()

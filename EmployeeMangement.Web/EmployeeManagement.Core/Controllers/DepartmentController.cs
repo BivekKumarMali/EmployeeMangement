@@ -14,7 +14,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [Authorize(Roles = "Admin,HR")]
+    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly AppDbContext _context;

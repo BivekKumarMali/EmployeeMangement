@@ -13,11 +13,12 @@
               routerLinkActive="router-link-active">Employee</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" [routerLink]="['/home/department']"
-              routerLinkActive="router-link-active">Department</a>
+            <a class="nav-link text-dark" [routerLink]="['/home/department']" routerLinkActive="router-link-active"
+              *ngIf="hideDepartment">Department</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link text-dark" [routerLink]="['/roles']" routerLinkActive="router-link-active">Roles</a>
+            <a class="nav-link text-dark" [routerLink]="['/roles']" routerLinkActive="router-link-active"
+              *ngIf="hideRoles">Roles</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-dark" [routerLink]="['/home/profile']"
@@ -31,8 +32,8 @@
       </div>
       <div class="float-right">
         <form method="post" asp-action="Logout" asp-controller="Home">
-          <button type="submit" class="btn btn-dark" asp-controller="Account" asp-action="Logout">Logout
-            Name</button>
+          <button type="submit" class="btn btn-dark" (click)="Logout()">Logout
+            {{Name}}</button>
         </form>
       </div>
     </div>

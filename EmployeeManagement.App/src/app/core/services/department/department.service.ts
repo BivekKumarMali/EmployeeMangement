@@ -23,8 +23,8 @@ export class DepartmentService {
 
   ResetDepartment(): Department {
     return {
-      Did: 0,
-      DepartmentName: ''
+      did: 0,
+      departmentName: ''
     };
   }
 

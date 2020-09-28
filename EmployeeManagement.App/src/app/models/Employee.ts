@@ -2,16 +2,16 @@ import { Department } from './Department';
 import { Roles } from './Roles';
 
 export interface Employee {
-  Eid: number;
-  Name: string;
-  Surname: string;
-  Address: string;
-  Qualification: string;
-  ContactNumber: number;
-  Did: number;
-  UserId: string;
-  RoleId: string;
+  eid: number;
+  name: string;
+  surname: string;
+  address: string;
+  qualification: string;
+  contactNumber: number;
+  did: number;
+  userId: string;
+  roleId: string;
 
-  Roles?: Roles;
-  Department?: Department;
+  roles?: Roles;
+  department?: Department;
 }

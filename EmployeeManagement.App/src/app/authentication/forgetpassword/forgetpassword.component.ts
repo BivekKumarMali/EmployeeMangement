@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/auth/auth.service';
 
 @Component({
   selector: 'app-forgetpassword',
@@ -10,7 +11,10 @@ import { Router } from '@angular/router';
 export class ForgetpasswordComponent implements OnInit {
 
   errormessage: string;
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -21,7 +25,10 @@ export class ForgetpasswordComponent implements OnInit {
       NewPassword: form.value.newpassword,
       ConfirmPassword: form.value.confirmpassword
     };
-    console.log(passwordReset);
-    this.router.navigate(['/login']);
+
+    this.authService.ResetPassword(passwordReset).subscribe({
+      error: err => this.errormessage = err,
+      complete: () => this.router.navigate(['/login'])
+    });
   }
 }
