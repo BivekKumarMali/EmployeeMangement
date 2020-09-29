@@ -53,114 +53,55 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         }
 
         [HttpGet("{Did}")]
+        [Route("ByDid/{Did}")]
         public async Task<IEnumerable<Employee>> GetEmployeesByDepartmentID(int Did)
         {
             IEnumerable<Employee> Employees = await _employeeRepository.GetAllEmployees();
             return Employees.Where(e => e.Did == Did);
         }
 
-        public IActionResult Create()
+        [HttpGet("{eid}")]
+        [Route("ByEid/{eid}")]
+        public Employee GetEmployeeByEid(int eid) 
         {
-            ViewData["DepartmentName"] = _employeeRepository.DepartmentListName();
-            ViewData["RolesName"] = _employeeRepository.RoleListName();
-            return View();
+            return _employeeRepository.GetEmployeeById(eid);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did,RoleId")] Employee employee)
+        public async Task<IActionResult> AddEmployee(Employee employee)
         {
-            if (ModelState.IsValid)
+            employee.UserId = await _manager.AddUserManager(employee);
+            if (employee.UserId != null)
             {
-                employee.UserId = await _manager.AddUserManager(employee);
-                if(employee.UserId != null)
-                {
-                    _employeeRepository.AddEmployee(employee);
-
-                    string userID = _manager.GetUserID(HttpContext.User);
-                    Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(userID);
-
-                    await _notificationRepository.AddEmployeeNotification(employee);
-
-                    return RedirectToAction(nameof(Index));
-                }
+                _employeeRepository.AddEmployee(employee);
+                await _notificationRepository.AddEmployeeNotification(employee);
+                return NoContent();
             }
-            ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
-            ViewData["RolesName"] = _employeeRepository.RoleListName();
-            return View(employee);
+            return NoContent();
         }
 
-        public IActionResult Edit(int? id)
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmployee(Employee employee)
         {
-            if (id == null)
+            if (await _manager.UpdateUserManager(employee))
             {
-                return NotFound();
+                _employeeRepository.UpdateEmployee(employee);
+                await _notificationRepository.EditEmployeeNotification(employee);
             }
-            Employee employee = _employeeRepository.GetEmployeeById(id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
-            ViewData["DepartmentName"] = _employeeRepository.DepartmentListName(employee.Did);
-            ViewData["RolesName"] = _employeeRepository.RoleListName();
-            return View(employee);
+            return NoContent();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Eid,Name,Surname,Address,Qualification,ContactNumber,Did,UserId,RoleId")] Employee employee)
+        
+        [HttpDelete("{eid}")]
+        public async Task<IActionResult> DeleteEmployee(int eid)
         {
-            if (id != employee.Eid)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    
-                    if (await _manager.UpdateUserManager(employee))
-                    {
-                        _employeeRepository.UpdateEmployee(employee);
-
-                        string userID = _manager.GetUserID(HttpContext.User);
-                        Employee currentEmployee = await _employeeRepository.GetEmployeeByUserId(userID);
-
-                        await _notificationRepository.EditEmployeeNotification(employee);
-                    }
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EmployeeExists(employee.Eid))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["DepartmentName"] = _employeeRepository.DepartmentListId(employee.Did);
-            ViewData["RolesName"] = _employeeRepository.RoleListName();
-            return View(employee);
-        }
-
-        public async Task<IActionResult> Delete(int id)
-        {
-            Employee employee = _employeeRepository.GetEmployeeById(id);
+            Employee employee = _employeeRepository.GetEmployeeById(eid);
             if (await _manager.DeleteUserManager(employee.UserId))
             {
-                _employeeRepository.DeleteEmployee(id);
+                _employeeRepository.DeleteEmployee(eid);
+                await _notificationRepository.DeleteEmployeeNotification(employee);
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool EmployeeExists(int id)
-        {
-            return _context.Employees.Any(e => e.Eid == id);
         }
 
     }

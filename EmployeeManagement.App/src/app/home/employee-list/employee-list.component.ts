@@ -32,5 +32,14 @@ export class EmployeeListComponent implements OnInit {
       });
     }
   }
+  DeleteEmployee(eid: number) {
+    if (confirm('Are you sure')) {
+      this.employeeService.DeleteEmployee(eid).subscribe({
+        error: err => this.errorMessage = err,
+        complete: () => location.reload()
+      });
+      location.reload();
+    }
+  }
 
 }

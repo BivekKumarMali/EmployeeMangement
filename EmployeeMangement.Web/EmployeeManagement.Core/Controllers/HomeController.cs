@@ -17,8 +17,6 @@ namespace EmployeeManagement.Web.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IValidationRepository _validation;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly INotificationRepository _notificationRepository;
         private readonly IManager _manager;
@@ -32,8 +30,6 @@ namespace EmployeeManagement.Web.Controllers
                 IManager manager
             )
         {
-            _logger = loggers;
-            _validation = validation;
             _employeeRepository = employeeRepository;
             _notificationRepository = notificationRepository;
             _manager = manager;
@@ -48,27 +44,6 @@ namespace EmployeeManagement.Web.Controllers
             int Did = await GetDepartmentId(_manager.GetUserID(HttpContext.User));
             return View(await _employeeRepository.FilterEmployee(Did));
             
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        public async Task<IActionResult> Profile(Employee employee)
-        {
-            if(employee.Eid != 0)
-            {
-                _employeeRepository.AddEmployee(employee);
-                return RedirectToAction("Index");
-            }
-            else
-            {
-
-                string userID = _manager.GetUserID(HttpContext.User);
-                employee = await _employeeRepository.GetEmployeeByUserId(userID);
-                return View(employee);
-            }
         }
         [HttpGet]
         public async Task<IActionResult> Notification()

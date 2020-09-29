@@ -30,7 +30,7 @@ import { AuthGuard } from '../core/auth/auth.guard';
       { path: '', redirectTo: 'employee', pathMatch: 'full' },
       { path: 'department', component: DepartmentComponent, canActivate: [AuthGuard], data: { permittedRoles: ['Admin', 'HR'] } },
       { path: 'profile', component: ProfileComponent },
-      { path: 'employee/:eid/edit', component: EditEmployeeComponent, canActivate: [AuthGuard], data: { permittedRoles: ['Admin', 'HR'] } }
+      { path: 'employee/:eid', component: EditEmployeeComponent, canActivate: [AuthGuard], data: { permittedRoles: ['Admin', 'HR'] } }
     ])
   ]
 })

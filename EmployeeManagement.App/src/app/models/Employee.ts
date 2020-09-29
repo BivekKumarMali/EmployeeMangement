@@ -12,6 +12,5 @@ export interface Employee {
   userId: string;
   roleId: string;
 
-  roles?: Roles;
   department?: Department;
 }

@@ -28,7 +28,7 @@ namespace EmployeeManagement.Web.Repository
 
         
 
-        public Employee GetEmployeeById(int? Eid)
+        public Employee GetEmployeeById(int Eid)
         {
             return _context.Employees.Find(Eid);
         }

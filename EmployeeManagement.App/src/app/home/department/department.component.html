@@ -9,34 +9,35 @@
           <th>
             Department Name
           </th>
-          <th></th>
+          <th *ngIf="CheckAdmin"></th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr *ngFor="let d of departments">
           <td>
-            Sample 1
+            {{d.departmentName}}
           </td>
-          <td>
-            <button class="btn btn-outline-primary">Edit</button> |
-            <a class="btn btn-outline-danger">Delete</a>
+          <td *ngIf="CheckAdmin">
+            <button class="btn btn-outline-primary" (click)="Edit(d)">Edit</button> |
+            <a class="btn btn-outline-danger" (click)="DeleteDepartment(d.did)">Delete</a>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="col-md-6">
-    <form asp-action="Add">
+  <div class="col-md-6" *ngIf="CheckAdmin">
+    <form #form="ngForm">
       <div asp-validation-summary="All" class="text-danger"></div>
       <div class="form-group">
-        <input hidden id="Did" class="form-control" />
+        <input hidden id="Did" class="form-control" name="id" [(ngModel)]="department.did" />
         <label class="control-label">Department Name</label>
-        <input type="text" id="DepartmentName" class="form-control" required />
+        <input type="text" id="DepartmentName" name="name" class="form-control" required
+          [(ngModel)]="department.departmentName" />
       </div>
       <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
-        <button type="reset" value="Reset" class="btn btn-success">Reset</button>
+        <input type="submit" (click)="AddDepartment()" class="btn btn-primary" [disabled]="!form.valid" />
+        <button type="reset" (click)="ResetDepartment()" class="btn btn-success">Reset</button>
       </div>
     </form>
   </div>

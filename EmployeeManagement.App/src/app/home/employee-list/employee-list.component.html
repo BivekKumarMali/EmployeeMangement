@@ -1,5 +1,5 @@
 <p>
-  <a [routerLink]="['0/edit']" routerLinkActive="router-link-active">Add New Employee</a>
+  <a [routerLink]="['0']" routerLinkActive="router-link-active">Add New Employee</a>
 </p>
 <div class="text-danger alert alert-danger" *ngIf="errorMessage">Server Problem</div>
 <table class="table">
@@ -23,8 +23,8 @@
       <td>{{e.contactNumber}}</td>
       <td>{{e.department.departmentName}}</td>
       <td>
-        <a asp-action="Edit">Edit</a> |
-        <a class="btn btn-outline-danger">Delete</a>
+        <a [routerLink]="[e.eid]" routerLinkActive="router-link-active">Edit</a> |
+        <a class="btn btn-outline-danger" (click)="DeleteEmployee(e.eid)">Delete</a>
       </td>
     </tr>
   </tbody>

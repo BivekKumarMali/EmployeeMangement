@@ -2,41 +2,42 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { Department } from 'src/app/models/Department';
 import { environment } from 'src/environments/environment';
+import { Roles } from 'src/app/models/Roles';
+
 @Injectable({
   providedIn: 'root'
 })
-export class DepartmentService {
+export class RolesService {
 
   url = environment.url;
   constructor(private http: HttpClient) { }
 
-  ResetDepartment(): Department {
+  ResetRoles(): Roles {
     return {
-      did: 0,
-      departmentName: ''
+      id: '',
+      name: ''
     };
   }
 
 
-  GetAllDepartments(): Observable<Department[]> {
-    return this.http.get<Department[]>(this.url + '/Department')
+  GetAllRoles(): Observable<Roles[]> {
+    return this.http.get<Roles[]>(this.url + '/Roles')
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  EditandAddDepartment(department: Department): Observable<Department> {
+  EditandAddRoles(roles: Roles): Observable<Roles> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<Department>(this.url + '/Department', department, { headers })
+    return this.http.post<Roles>(this.url + '/Roles', roles, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
-  DeleteDepartment(did: number): Observable<{}> {
+  DeleteRoles(id: string): Observable<{}> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.delete<Department>(this.url + '/Department/' + did)
+    return this.http.delete<Roles>(this.url + '/Roles/' + id)
       .pipe(
         catchError(this.handleError)
       );

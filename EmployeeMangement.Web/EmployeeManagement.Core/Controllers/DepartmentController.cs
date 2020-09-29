@@ -14,7 +14,6 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [Authorize]
     public class DepartmentController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -33,13 +32,13 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Department>> Index()
+        public async Task<IEnumerable<Department>> GetDepartments()
         {
             return await _departmentRepository.GetAllDepartments();
         }
 
-        [Authorize(Roles = "Admin")]
-        public IActionResult Add([Bind("Did,DepartmentName,RoleId")] Department department)
+        [HttpPost]
+        public IActionResult AddandEdit(Department department)
         {
             department.DepartmentName = department.DepartmentName.Trim();
             if (department.Did == 0)
@@ -54,24 +53,18 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 
 
             }
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
 
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Delete(int id)
+        [HttpDelete("{did}")]
+        public IActionResult Delete(int did)
         {
-            Department department = _departmentRepository.GetDepartmentById(id);
+            Department department = _departmentRepository.GetDepartmentById(did);
 
-            _departmentRepository.DeleteDepartment(id);
+            _departmentRepository.DeleteDepartment(did);
             _notificationRepository.DeleteDepartmentNotification();
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.Did == id);
         }
     }
 }

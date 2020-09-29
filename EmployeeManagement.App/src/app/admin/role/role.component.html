@@ -15,13 +15,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngFor="let r of roles">
                   <td>
-                    Sample 1
+                    {{r.name}}
                   </td>
                   <td>
-                    <button class="btn btn-outline-primary">Edit</button> |
-                    <a class="btn btn-outline-danger">Delete</a>
+                    <button class="btn btn-outline-primary" (click)="Edit(r)">Edit</button> |
+                    <a class="btn btn-outline-danger" (click)="DeleteRoles(r.id)">Delete</a>
                   </td>
                 </tr>
               </tbody>
@@ -29,16 +29,15 @@
           </div>
 
           <div class="col-md-6">
-            <form asp-action="Add">
-              <div asp-validation-summary="All" class="text-danger"></div>
+            <form #form="ngForm">
               <div class="form-group">
-                <input hidden id="Did" class="form-control" />
-                <label for="role" class="control-label">Role</label>
-                <input type="text" id="role" class="form-control" required />
+                <input hidden id="id" class="form-control" name="id" [(ngModel)]="role.id" />
+                <label for="role" class="control-label">Role Name</label>
+                <input type="text" id="role" class="form-control" name="name" [(ngModel)]="role.name" required />
               </div>
               <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-                <button type="reset" value="Reset" class="btn btn-success">Reset</button>
+                <input type="submit" (click)="AddRoles()" class="btn btn-primary" />
+                <button type="reset" (click)="ResetRoles()" class="btn btn-success">Reset</button>
               </div>
             </form>
           </div>

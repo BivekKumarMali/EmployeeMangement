@@ -9,10 +9,14 @@ using EmployeeManagement.Web.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Web.Http.Cors;
 
 namespace EmployeeManagement.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
+    [ApiController]
+    [Route("[controller]")]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class RolesController : Controller
     {
         private readonly IManager _manager;
@@ -24,42 +28,33 @@ namespace EmployeeManagement.Web.Controllers
             _rolesViewModel = new RolesViewModel();
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IEnumerable<IdentityRole> GetRoles()
         {
-            _rolesViewModel.IdentityRoles = _manager.GetAllRoles();
-            return View(_rolesViewModel);
+            return _manager.GetAllRoles();
         }
-
+        [HttpPost]
         public async Task<IActionResult> Add(IdentityRole identityRole)
         {
             identityRole.Name = identityRole.Name.Trim();
-            if (identityRole.Id == null)
+            if (identityRole.Id == "")
             {
-                if (await _manager.AddRoleManager(identityRole))
-                {
-                    return RedirectToAction("Index");
-                }
+                await _manager.AddRoleManager(identityRole);
             }
             else
             {
                 identityRole.NormalizedName = identityRole.Name.ToUpper();
-                if (await _manager.UpdateRoleManager(identityRole))
-                {
-                    return RedirectToAction("Index");
-                }
+                await _manager.UpdateRoleManager(identityRole);
 
             }
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
 
-
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            if (await _manager.DeleteRoleManager(id))
-            {
-                return RedirectToAction("Index");
-            }
-            return RedirectToAction(nameof(Index));
+            await _manager.DeleteRoleManager(id);
+            return NoContent();
         }
     }
 }
