@@ -77,9 +77,9 @@ namespace EmployeeManagement.Web.Repository
             return employees.Where(x => x.Did == Did);
         }
 
-        public async Task<Employee> GetEmployeeByUserId(string userId)
+        public Employee GetEmployeeByUserId(string userId)
         {
-            return await _context.Employees.FirstAsync(x => x.UserId == userId);
+            return _context.Employees.First(x => x.UserId == userId);
         }
 
         public List<IdentityRole> RoleListName()

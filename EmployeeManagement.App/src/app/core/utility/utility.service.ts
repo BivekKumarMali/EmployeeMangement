@@ -47,4 +47,12 @@ export class UtilityService {
       return payLoad.Did;
     }
   }
+
+  JwtUserIDExtractor(): string {
+    const payLoad = this.GetPayLoad();
+
+    if (payLoad != null) {
+      return payLoad.UserID;
+    }
+  }
 }

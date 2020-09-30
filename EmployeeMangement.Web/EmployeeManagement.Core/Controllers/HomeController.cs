@@ -45,22 +45,6 @@ namespace EmployeeManagement.Web.Controllers
             return View(await _employeeRepository.FilterEmployee(Did));
             
         }
-        [HttpGet]
-        public async Task<IActionResult> Notification()
-        {
-            NotificationViewModel notificationViewModel = new NotificationViewModel();
-            if (User.IsInRole("Admin") || User.IsInRole("HR"))
-            {
-                notificationViewModel.Notifications = _notificationRepository.GetNotifications(_manager.GetUserID(HttpContext.User));
-            }
-            else
-            {
-                int Did = await GetDepartmentId(_manager.GetUserID(HttpContext.User));
-                notificationViewModel.Notifications = _notificationRepository.GetNotificationsByDid(Did, _manager.GetUserID(HttpContext.User));
-            }
-
-            return Ok(new { UserNotification = notificationViewModel.Notifications, Count = notificationViewModel.Notifications.Count() });
-        }
 
         public void ReadNotification(int Nid)
         {
@@ -70,7 +54,7 @@ namespace EmployeeManagement.Web.Controllers
 
         public async Task<int> GetDepartmentId(string userId)
         {
-            Employee employee = await _employeeRepository.GetEmployeeByUserId(userId);
+            Employee employee = _employeeRepository.GetEmployeeByUserId(userId);
             return employee.Did;
         }
 

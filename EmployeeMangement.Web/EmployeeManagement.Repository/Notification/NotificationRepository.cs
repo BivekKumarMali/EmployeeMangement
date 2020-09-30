@@ -50,17 +50,17 @@ namespace EmployeeManagement.Web.Repository
                     notifications.Remove(notification);
                 }
             }
-            return notifications.Where(x => x.Did == Did);
+            return notifications.Where(x => x.did == Did);
         }
 
         public async Task AddDepartmentNotification()
         {
             Notification notification = new Notification
             {
-                Name = "Department",
-                Action = "Added",
-                Date = DateTime.Now.ToString(),
-                Did = 0
+                name = "Department",
+                action = "Added",
+                date = DateTime.Now.ToString(),
+                did = 0
             };
              AddNotification(notification);
         }
@@ -69,10 +69,10 @@ namespace EmployeeManagement.Web.Repository
         {
             Notification notification = new Notification
             {
-                Name = "Department",
-                Action = "Edit",
-                Date = DateTime.Now.ToString(),
-                Did = 0
+                name = "Department",
+                action = "Edit",
+                date = DateTime.Now.ToString(),
+                did = 0
             };
              AddNotification(notification);
         }
@@ -81,10 +81,10 @@ namespace EmployeeManagement.Web.Repository
         {
             Notification notification = new Notification
             {
-                Name = employee.Name +" "+ employee.Surname,
-                Action = "Added",
-                Date = DateTime.Now.ToString(),
-                Did = employee.Did
+                name = employee.Name +" "+ employee.Surname,
+                action = "Added",
+                date = DateTime.Now.ToString(),
+                did = employee.Did
             };
              AddNotification(notification);
         }
@@ -93,10 +93,10 @@ namespace EmployeeManagement.Web.Repository
         {
             Notification notification = new Notification
             {
-                Name = employee.Name + " " + employee.Surname,
-                Action = "Edit",
-                Date = DateTime.Now.ToString(),
-                Did = employee.Did
+                name = employee.Name + " " + employee.Surname,
+                action = "Edit",
+                date = DateTime.Now.ToString(),
+                did = employee.Did
             };
              AddNotification(notification);
         }
@@ -105,10 +105,10 @@ namespace EmployeeManagement.Web.Repository
         {
             Notification notification = new Notification
             {
-                Name = "Department",
-                Action = "Delete",
-                Date = DateTime.Now.ToString(),
-                Did = 0
+                name = "Department",
+                action = "Delete",
+                date = DateTime.Now.ToString(),
+                did = 0
             };
             AddNotification(notification);
         }

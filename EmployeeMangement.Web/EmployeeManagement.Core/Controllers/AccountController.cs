@@ -48,7 +48,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                     if (await _validation.CheckValidation(logInViewModel.Email, logInViewModel.Password))
                     {
                         var user = await _manager.GetUserByEmail(logInViewModel.Email);
-                        var employee = await _employeeRepository.GetEmployeeByUserId(user.Id);
+                        var employee = _employeeRepository.GetEmployeeByUserId(user.Id);
                         var role = await _userManager.GetRolesAsync(user);
 
                         IdentityOptions _options = new IdentityOptions();

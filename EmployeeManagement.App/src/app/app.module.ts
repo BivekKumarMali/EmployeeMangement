@@ -20,7 +20,7 @@ import { PageNotFoundComponent } from './PageNotFound.component';
     AppRoutingModule,
     FormsModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

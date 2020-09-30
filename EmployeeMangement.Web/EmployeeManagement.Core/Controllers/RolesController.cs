@@ -20,12 +20,10 @@ namespace EmployeeManagement.Web.Controllers
     public class RolesController : Controller
     {
         private readonly IManager _manager;
-        private readonly RolesViewModel _rolesViewModel;
 
         public RolesController(IManager manager)
         {
             _manager = manager;
-            _rolesViewModel = new RolesViewModel();
         }
 
         [HttpGet]

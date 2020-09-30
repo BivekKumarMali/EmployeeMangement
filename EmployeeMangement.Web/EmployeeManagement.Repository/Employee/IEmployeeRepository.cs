@@ -14,7 +14,7 @@ namespace EmployeeManagement.Web.Repository
         Task<IEnumerable<Employee>> GetAllEmployees();
         Task<IEnumerable<Employee>> FilterEmployee(int Did);
         Employee GetEmployeeById(int id);
-        Task<Employee> GetEmployeeByUserId(string userId);
+        Employee GetEmployeeByUserId(string userId);
         SelectList DepartmentListName();
         SelectList DepartmentListName(int id);
         SelectList DepartmentListId(int id);
