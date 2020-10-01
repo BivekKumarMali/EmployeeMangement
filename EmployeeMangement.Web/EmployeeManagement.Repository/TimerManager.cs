@@ -16,13 +16,13 @@ namespace EmployeeManagement.Web.Repository
         {
             _action = action;
             _autoResetEvent = new AutoResetEvent(false);
-            _timer = new Timer(Execute, _autoResetEvent, 1000, 2000);
+            _timer = new Timer(Execute, _autoResetEvent, 2000, 2000);
             TimerStarted = DateTime.Now;
         }
         public void Execute(object stateInfo)
         {
             _action();
-            if ((DateTime.Now - TimerStarted).Seconds > 60)
+            if ((DateTime.Now - TimerStarted).Seconds > 120)
             {
                 _timer.Dispose();
             }

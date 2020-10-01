@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SignalRService } from 'src/app/core/utility/signal-r.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { SignalRService } from 'src/app/core/utility/SignalR/signal-r.service';
 import { UtilityService } from 'src/app/core/utility/utility.service';
 import { NotificationDetails } from 'src/app/models/Notification';
 import { environment } from 'src/environments/environment';
@@ -17,13 +18,15 @@ export class NavbarComponent implements OnInit {
   hideRoles: boolean;
   hideDepartment: boolean;
   UserID: string;
-  NotificationDetails: object;
+  NotificationDetails: NotificationDetails[];
   url = environment.url;
+  errorMessage: any;
   constructor(
     private utilityService: UtilityService,
     private router: Router,
     public signalRService: SignalRService,
-    private http: HttpClient
+    private http: HttpClient,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -40,10 +43,17 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   private startHttpRequest = () => {
-    this.http.get(this.url + '/notification/' + this.UserID)
+    this.http.get(this.url + '/notification/GetNotification/' + this.UserID)
       .subscribe(res => {
-        this.NotificationDetails = res;
+        console.log('check', res);
       });
+  }
+
+  ReaddNotifications(nid: number) {
+    const userId = this.utilityService.JwtUserIDExtractor();
+    this.notificationService.IsReadNotifications(nid, userId).subscribe({
+      error: err => this.errorMessage = err
+    })
   }
 }
 

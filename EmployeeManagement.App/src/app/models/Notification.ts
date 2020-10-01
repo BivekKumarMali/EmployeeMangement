@@ -1,8 +1,3 @@
-export interface Notification {
-  userNotification: NotificationDetails;
-  count: number;
-}
-
 export interface NotificationDetails {
   nid: number;
   name: string;

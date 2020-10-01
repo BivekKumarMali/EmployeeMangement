@@ -46,12 +46,6 @@ namespace EmployeeManagement.Web.Controllers
             
         }
 
-        public void ReadNotification(int Nid)
-        {
-            string userId = _manager.GetUserID(HttpContext.User);
-            _notificationRepository.IsReadNotification(Nid, userId);
-        }
-
         public async Task<int> GetDepartmentId(string userId)
         {
             Employee employee = _employeeRepository.GetEmployeeByUserId(userId);

@@ -24,9 +24,16 @@
             <a class="nav-link text-dark" [routerLink]="['/home/profile']"
               routerLinkActive="router-link-active">Profile</a>
           </li>
-          <li>
-            <span class="badge notification-count" id="notificationCount" data-toggle="popover"
-              title="Notifications"></span>
+          <li *ngIf="signalRService.data">
+            <div class="dropdown">
+              <button class="dropbtn">{{signalRService.data.length}}
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <a *ngFor="let data of signalRService.data" (click)="ReaddNotifications(data.nid)">{{data.action}} by
+                  {{data.name}} on {{data.date}}</a>
+              </div>
+            </div>
           </li>
         </ul>
       </div>

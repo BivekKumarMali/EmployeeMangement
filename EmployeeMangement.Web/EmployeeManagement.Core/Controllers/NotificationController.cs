@@ -22,7 +22,6 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         private INotificationRepository _notificationRepository;
         private readonly IManager _manager;
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly UserManager<IdentityUser> _userManager;
 
         public NotificationController(
             IHubContext<SignalServer> hub,
@@ -36,9 +35,9 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             _notificationRepository = notificationRepository;
             _manager = manager;
             _employeeRepository = employeeRepository;
-            _userManager = userManager;
         }
         [HttpGet("{userID}")]
+        [Route("GetNotification/{userID}")]
         public IActionResult Get(string userID)
         {
             var result = Notification(userID);
@@ -60,6 +59,12 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             {
                 return _notificationRepository.GetNotificationsByDid(employee.Did,userID);
             }
+        }
+
+        [HttpPost("{nid}")]
+        public void ReadNotification(int nid, string userId)
+        {
+            _notificationRepository.IsReadNotification(nid, userId);
         }
     }
 }

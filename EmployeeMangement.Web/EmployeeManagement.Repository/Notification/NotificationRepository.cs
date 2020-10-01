@@ -27,9 +27,9 @@ namespace EmployeeManagement.Web.Repository
 
             foreach (var read in reads)
             {
-                if(read.UserId == userId)
+                if(read.userId == userId)
                 {
-                    Notification notification = _context.Notifications.Find(read.Nid);
+                    Notification notification = _context.Notifications.Find(read.nid);
                     notifications.Remove(notification);
                 }
             }
@@ -44,9 +44,9 @@ namespace EmployeeManagement.Web.Repository
 
             foreach (var read in reads)
             {
-                if (read.UserId == userId)
+                if (read.userId == userId)
                 {
-                    Notification notification = _context.Notifications.Find(read.Nid);
+                    Notification notification = _context.Notifications.Find(read.nid);
                     notifications.Remove(notification);
                 }
             }
@@ -122,8 +122,8 @@ namespace EmployeeManagement.Web.Repository
         {
             IsRead read = new IsRead
             {
-                Nid = nid,
-                UserId = userId
+                nid = nid,
+                userId = userId
             };
             _context.IsReads.Add(read);
             _context.SaveChanges();

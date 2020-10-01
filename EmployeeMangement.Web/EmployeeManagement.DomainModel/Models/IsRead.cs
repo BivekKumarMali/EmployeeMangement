@@ -10,11 +10,11 @@ namespace EmployeeManagement.Web.Models
     public class IsRead
     {
         [Key]
-        public int Rid { get; set; }
+        public int rid { get; set; }
         [ForeignKey("AspNetUsers")]
-        public string UserId { get; set; }
+        public string userId { get; set; }
         [ForeignKey("Notifications")]
-        public int Nid { get; set; }
+        public int nid { get; set; }
 
     }
 }
