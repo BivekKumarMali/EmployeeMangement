@@ -13,46 +13,37 @@ namespace EmployeeManagement.Web.Repository
         private AppDbContext _context { get; set; }
         private IHubContext<SignalServer> _hubContext;
 
-        public NotificationRepository(AppDbContext context, IHubContext<SignalServer> hubContext)
+        public NotificationRepository(
+            AppDbContext context, IHubContext<SignalServer> hubContext)
         {
             _context = context;
             _hubContext = hubContext;
         }
         
 
-        public IEnumerable<Notification> GetNotifications(string userId)
+        public IEnumerable<Notification> GetNotifications()
         {
-            var notifications = _context.Notifications.ToList();
-            var reads = _context.IsReads.ToList();
+            var notifications = (from notification in _context.Notifications
+                                 join isread in _context.IsReads
+                                 on notification.nid equals isread.nid
+                                 select new Notification
+                                 {
+                                     nid = notification.nid,
+                                     action = notification.action,
+                                     date = notification.date,
+                                     did = notification.did,
+                                     name = notification.name,
+                                     isRead = isread
 
-            foreach (var read in reads)
-            {
-                if(read.userId == userId)
-                {
-                    Notification notification = _context.Notifications.Find(read.nid);
-                    notifications.Remove(notification);
-                }
-            }
+                                 }).ToList();
             return notifications;
         }
 
-        public IEnumerable<Notification> GetNotificationsByDid(int Did,string userId)
+        public void SendNotification()
         {
-
-            var notifications = _context.Notifications.ToList();
-            var reads = _context.IsReads.ToList();
-
-            foreach (var read in reads)
-            {
-                if (read.userId == userId)
-                {
-                    Notification notification = _context.Notifications.Find(read.nid);
-                    notifications.Remove(notification);
-                }
-            }
-            return notifications.Where(x => x.did == Did);
+            var result = GetNotifications();
+            _hubContext.Clients.All.SendAsync("transferchartdata", result);
         }
-
         public async Task AddDepartmentNotification()
         {
             Notification notification = new Notification

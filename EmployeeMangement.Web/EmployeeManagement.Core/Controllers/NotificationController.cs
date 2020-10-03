@@ -20,51 +20,34 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     {
         private readonly IHubContext<SignalServer> _hub;
         private INotificationRepository _notificationRepository;
-        private readonly IManager _manager;
-        private readonly IEmployeeRepository _employeeRepository;
 
         public NotificationController(
             IHubContext<SignalServer> hub,
-            INotificationRepository notificationRepository,
-            IManager manager,
-            IEmployeeRepository employeeRepository,
-            UserManager<IdentityUser> userManager
+            INotificationRepository notificationRepository
             )
         {
             _hub = hub;
             _notificationRepository = notificationRepository;
-            _manager = manager;
-            _employeeRepository = employeeRepository;
         }
         [HttpGet("{userID}")]
         [Route("GetNotification/{userID}")]
-        public IActionResult Get(string userID)
+        public IActionResult Get()
         {
-            var result = Notification(userID);
-            var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferchartdata", result.Result));
+            var result = Notification();
+            _hub.Clients.All.SendAsync("transferchartdata", result.Result);
             return Ok(new { result.Result});
         }
         [HttpPost]
-        public async Task<IEnumerable<Notification>> Notification(string userID)
+        public async Task<IEnumerable<Notification>> Notification()
         {
-            IdentityRole role = new IdentityRole();
-            Employee employee = _employeeRepository.GetEmployeeByUserId(userID);
-            Task<IdentityRole> t = _manager.GetRoleById(employee.RoleId);
-            role = t.Result;
-            if ( (role.Name == "Admin") || (role.Name == "HR"))
-            {
-                return _notificationRepository.GetNotifications(userID);
-            }
-            else
-            {
-                return _notificationRepository.GetNotificationsByDid(employee.Did,userID);
-            }
+                return _notificationRepository.GetNotifications();
         }
 
-        [HttpPost("{nid}")]
-        public void ReadNotification(int nid, string userId)
+        [HttpPost("{nid_userId}")]
+        public void ReadNotification(string nid_userId)
         {
-            _notificationRepository.IsReadNotification(nid, userId);
+            var newnid_userId = nid_userId.Split(" ");
+            _notificationRepository.IsReadNotification(int.Parse(newnid_userId[0]), newnid_userId[1]);
         }
     }
 }

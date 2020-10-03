@@ -8,8 +8,8 @@ namespace EmployeeManagement.Web.Repository
 {
     public interface INotificationRepository
     {
-        IEnumerable<Notification> GetNotifications(string userId);
-        IEnumerable<Notification> GetNotificationsByDid(int Did, string userId);
+        IEnumerable<Notification> GetNotifications();
+        void SendNotification();
 
 
         Task AddDepartmentNotification();

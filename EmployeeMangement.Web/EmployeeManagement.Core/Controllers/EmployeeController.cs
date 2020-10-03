@@ -77,6 +77,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 await _notificationRepository.AddEmployeeNotification(employee);
                 return NoContent();
             }
+            _notificationRepository.SendNotification();
             return NoContent();
         }
 
@@ -88,6 +89,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 _employeeRepository.UpdateEmployee(employee);
                 await _notificationRepository.EditEmployeeNotification(employee);
             }
+            _notificationRepository.SendNotification();
             return NoContent();
         }
 
@@ -101,6 +103,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 _employeeRepository.DeleteEmployee(eid);
                 await _notificationRepository.DeleteEmployeeNotification(employee);
             }
+            _notificationRepository.SendNotification();
             return RedirectToAction(nameof(Index));
         }
 

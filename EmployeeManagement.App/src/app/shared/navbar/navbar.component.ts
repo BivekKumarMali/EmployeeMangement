@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
   hideRoles: boolean;
   hideDepartment: boolean;
   UserID: string;
-  NotificationDetails: NotificationDetails[];
+  NotificationDetails: object;
   url = environment.url;
   errorMessage: any;
   constructor(
@@ -34,7 +34,6 @@ export class NavbarComponent implements OnInit {
     this.Name = this.utilityService.JWTNameExtractor();
     this.hideRoles = this.utilityService.JWTCheckRoles(['Admin']);
     this.hideDepartment = this.utilityService.JWTCheckRoles(['Admin', 'HR']);
-    this.signalRService.startConnection();
     this.signalRService.addTransferChartDataListener();
     this.startHttpRequest();
   }
@@ -45,7 +44,8 @@ export class NavbarComponent implements OnInit {
   private startHttpRequest = () => {
     this.http.get(this.url + '/notification/GetNotification/' + this.UserID)
       .subscribe(res => {
-        console.log('check', res);
+        this.NotificationDetails = res;
+        console.log();
       });
   }
 
@@ -53,7 +53,7 @@ export class NavbarComponent implements OnInit {
     const userId = this.utilityService.JwtUserIDExtractor();
     this.notificationService.IsReadNotifications(nid, userId).subscribe({
       error: err => this.errorMessage = err
-    })
+    });
   }
 }
 

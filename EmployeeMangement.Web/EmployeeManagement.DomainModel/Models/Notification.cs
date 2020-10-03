@@ -17,5 +17,6 @@ namespace EmployeeManagement.Web.Models
         [ForeignKey("Departments")]
         public int did { get; set; }
 
+        public IsRead isRead { get; set; }
     }
 }

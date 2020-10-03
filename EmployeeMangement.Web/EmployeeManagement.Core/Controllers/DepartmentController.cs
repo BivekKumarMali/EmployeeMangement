@@ -22,7 +22,12 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         private readonly IManager _manager;
         private readonly INotificationRepository _notificationRepository;
 
-        public DepartmentController(AppDbContext context, IDepartmentRepository departmentRepository, INotificationRepository notificationRepository, IManager manager)
+        public DepartmentController(
+            AppDbContext context, 
+            IDepartmentRepository departmentRepository, 
+            INotificationRepository notificationRepository, 
+            IManager manager
+            )
         {
             _context = context;
             _departmentRepository = departmentRepository;
@@ -53,6 +58,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 
 
             }
+            _notificationRepository.SendNotification();
             return NoContent();
         }
 
@@ -63,6 +69,8 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 
             _departmentRepository.DeleteDepartment(did);
             _notificationRepository.DeleteDepartmentNotification();
+
+            _notificationRepository.SendNotification();
 
             return RedirectToAction(nameof(Index));
         }

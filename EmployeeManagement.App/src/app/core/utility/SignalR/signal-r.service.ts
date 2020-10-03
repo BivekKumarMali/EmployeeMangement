@@ -11,8 +11,7 @@ export class SignalRService {
   public data: NotificationDetails[];
   private hubConnection: signalR.HubConnection;
 
-
-  public startConnection = () => {
+  constructor() {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.url + '/signalServer')
       .build();

@@ -16,8 +16,10 @@ export class NotificationService {
 
 
   IsReadNotifications(nid: number, userId: string): Observable<string> {
+    // tslint:disable-next-line:variable-name
+    const nid_userId = nid + ' ' + userId;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post<string>(this.url + '/notification/' + nid, userId, { headers })
+    return this.http.post<string>(this.url + '/notification/' + nid_userId, { headers })
       .pipe(
         catchError(this.handleError)
       );
