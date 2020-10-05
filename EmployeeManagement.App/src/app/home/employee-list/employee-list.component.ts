@@ -20,8 +20,6 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.AdminHrService = this.utilityService.JWTCheckRoles(['Admin', 'HR']);
-    console.log(this.AdminHrService);
-
     if (!this.AdminHrService) {
       const DepartmentID = this.utilityService.GetDepartmentID();
       this.employeeService.GetEmployeesByDepartment(DepartmentID).subscribe({
@@ -31,7 +29,10 @@ export class EmployeeListComponent implements OnInit {
     }
     else {
       this.employeeService.GetEmployees().subscribe({
-        next: employee => this.employees = employee,
+        next: employee => {
+          console.log(employee);
+          this.employees = employee;
+        },
         error: err => this.errorMessage = err,
       });
     }

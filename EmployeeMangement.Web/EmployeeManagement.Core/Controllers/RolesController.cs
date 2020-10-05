@@ -17,6 +17,7 @@ namespace EmployeeManagement.Web.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         private readonly IManager _manager;

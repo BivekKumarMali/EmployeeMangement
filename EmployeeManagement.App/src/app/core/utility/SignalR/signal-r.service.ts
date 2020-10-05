@@ -10,10 +10,12 @@ export class SignalRService {
   url = environment.url;
   public data: NotificationDetails[];
   private hubConnection: signalR.HubConnection;
+  loginToken: string;
 
   constructor() {
+    this.loginToken = localStorage.getItem('token');
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(this.url + '/signalServer')
+      .withUrl(this.url + '/signalServer', { accessTokenFactory: () => this.loginToken })
       .build();
     this.hubConnection
       .start()

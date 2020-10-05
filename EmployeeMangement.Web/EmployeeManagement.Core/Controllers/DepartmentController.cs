@@ -14,6 +14,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize(Roles = "Admin, HR")]
     public class DepartmentController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -43,6 +44,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddandEdit(Department department)
         {
             department.DepartmentName = department.DepartmentName.Trim();
@@ -63,6 +65,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         }
 
         [HttpDelete("{did}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int did)
         {
             Department department = _departmentRepository.GetDepartmentById(did);

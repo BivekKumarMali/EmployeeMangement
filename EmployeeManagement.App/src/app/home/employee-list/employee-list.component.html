@@ -16,15 +16,15 @@
   </thead>
   <tbody>
     <tr *ngFor="let e of employees">
-      <td>{{e.name}}</td>
-      <td>{{e.surname}}</td>
-      <td>{{e.address}}</td>
-      <td>{{e.qualification}}</td>
-      <td>{{e.contactNumber}}</td>
-      <td>{{e.department.departmentName}}</td>
+      <td>{{e.Name}}</td>
+      <td>{{e.Surname}}</td>
+      <td>{{e.Address}}</td>
+      <td>{{e.Qualification}}</td>
+      <td>{{e.ContactNumber}}</td>
+      <td>{{e.Department.DepartmentName}}</td>
       <td *ngIf="AdminHrService">
-        <a [routerLink]="[e.eid]" routerLinkActive="router-link-active">Edit</a> |
-        <a class="btn btn-outline-danger" (click)="DeleteEmployee(e.eid)">Delete</a>
+        <a [routerLink]="[e.Eid]" routerLinkActive="router-link-active">Edit</a> |
+        <a class="btn btn-outline-danger" (click)="DeleteEmployee(e.Eid)">Delete</a>
       </td>
     </tr>
   </tbody>

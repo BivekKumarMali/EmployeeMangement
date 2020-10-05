@@ -6,6 +6,7 @@ using System.Web.Http.Cors;
 using EmployeeManagement.Web.Models;
 using EmployeeManagement.Web.Repository;
 using EmployeeManagement.Web.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class NotificationController : ControllerBase
     {
         private readonly IHubContext<SignalServer> _hub;

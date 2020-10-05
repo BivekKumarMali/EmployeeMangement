@@ -56,8 +56,8 @@ export class EditEmployeeComponent implements OnInit {
 
   AddEmployee() {
     console.log(this.Employee);
-    if (this.Employee.eid === 0) {
-      this.Employee.did = Number(this.Employee.did);
+    if (this.Employee.Eid === 0) {
+      this.Employee.Did = Number(this.Employee.Did);
       this.employeeService.AddEmployee(this.Employee).subscribe({
         error: err => this.errorMessage = err
       });

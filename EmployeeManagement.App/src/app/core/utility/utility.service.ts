@@ -13,7 +13,7 @@ export class UtilityService {
   JWTNameExtractor(): string {
     const payLoad = this.GetPayLoad();
     if (payLoad != null) {
-      return payLoad.Name;
+      return payLoad.name;
     }
   }
 
@@ -35,6 +35,8 @@ export class UtilityService {
   GetPayLoad(): any {
     if (this.token != null) {
       const payLoad = JSON.parse(window.atob(this.token.split('.')[1]));
+      console.log(payLoad);
+
       return payLoad;
     }
     return null;

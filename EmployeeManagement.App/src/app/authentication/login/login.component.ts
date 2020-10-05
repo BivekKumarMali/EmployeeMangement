@@ -23,14 +23,7 @@ export class LoginComponent implements OnInit {
 
   ToLogin(form: NgForm): void {
     this.login = form.value;
-    this.authService.Login(this.login).subscribe(
-      (res: any) => {
-        console.log(res.token);
-        localStorage.setItem('token', res.token);
-        this.router.navigateByUrl('/home');
-      },
-      err => this.errormessage = err
-    );
+    this.authService.Login(this.login);
   }
 
 }

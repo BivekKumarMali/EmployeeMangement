@@ -39,7 +39,8 @@ export class NavbarComponent implements OnInit {
     this.Did = this.utilityService.GetDepartmentID();
     this.hideRoles = this.utilityService.JWTCheckRoles(['Admin']);
     this.hideDepartment = this.utilityService.JWTCheckRoles(['Admin', 'HR']);
-    this.fetchIsRead();
+    // this.startHttpRequest();
+    //this.signalRService.addTransferChartDataListener(this.isRead, this.UserID, this.Role, this.Did);
   }
   Logout() {
     localStorage.removeItem('token');
@@ -62,16 +63,6 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  fetchIsRead() {
-    this.notificationService.GetIsReadNotifications(this.UserID).subscribe({
-      next: data => this.isRead = data,
-      error: err => this.errorMessage = err,
-      complete: () => {
-        this.startHttpRequest();
-        this.signalRService.addTransferChartDataListener(this.isRead, this.UserID, this.Role, this.Did);
 
-      }
-    });
-  }
 }
 

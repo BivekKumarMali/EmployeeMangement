@@ -14,29 +14,41 @@ export class DepartmentService {
 
   ResetDepartment(): Department {
     return {
-      did: 0,
-      departmentName: ''
+      Did: 0,
+      DepartmentName: ''
     };
   }
 
 
   GetAllDepartments(): Observable<Department[]> {
-    return this.http.get<Department[]>(this.url + '/Department')
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<Department[]>(this.url + '/Department', { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   EditandAddDepartment(department: Department): Observable<Department> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
     return this.http.post<Department>(this.url + '/Department', department, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
   DeleteDepartment(did: number): Observable<{}> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.delete<Department>(this.url + '/Department/' + did)
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.delete<Department>(this.url + '/Department/' + did, { headers })
       .pipe(
         catchError(this.handleError)
       );

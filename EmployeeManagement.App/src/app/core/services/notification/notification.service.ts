@@ -27,13 +27,13 @@ export class NotificationService {
   }
 
 
-  GetIsReadNotifications(userID: string): Observable<IsRead[]> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.get<IsRead[]>(this.url + '/Notification/GetIsRead/' + userID, { headers })
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+  // GetIsReadNotifications(userID: string): Observable<IsRead[]> {
+  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   return this.http.get<IsRead[]>(this.url + '/Notification/GetIsRead/' + userID, { headers })
+  //     .pipe(
+  //       catchError(this.handleError)
+  //     );
+  // }
 
   private handleError(err: HttpErrorResponse) {
     let errorMessage = '';

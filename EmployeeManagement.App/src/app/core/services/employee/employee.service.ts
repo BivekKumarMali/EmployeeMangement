@@ -17,35 +17,47 @@ export class EmployeeService {
 
   IntailizeEmployee(): Employee {
     return {
-      address: '',
-      contactNumber: null,
-      did: 0,
-      eid: 0,
-      name: '',
-      qualification: '',
-      roleId: '',
-      surname: '',
-      userId: '',
-      department: null
+      Address: '',
+      ContactNumber: null,
+      Did: 0,
+      Eid: 0,
+      Name: '',
+      Qualification: '',
+      RoleId: '',
+      Surname: '',
+      UserId: '',
+      Department: null
     };
   }
 
   GetEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.url + '/Employee')
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<Employee[]>(this.url + '/Employee', { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   GetEmployeesByDepartment(Did: number): Observable<Employee[]> {
-    return this.http.get<Employee[]>(this.url + '/Employee/ByDid/' + Did)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<Employee[]>(this.url + '/Employee/ByDid/' + Did, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   GetEmployeesByEid(eid: number): Observable<Employee> {
-    return this.http.get<Employee>(this.url + '/Employee/ByEid/' + eid)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<Employee>(this.url + '/Employee/ByEid/' + eid, { headers })
       .pipe(
         catchError(this.handleError)
       );
@@ -53,14 +65,21 @@ export class EmployeeService {
 
 
   GetEmployeesByUserId(userId: string): Observable<Employee> {
-    return this.http.get<Employee>(this.url + '/Employee/ByUserID/' + userId)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<Employee>(this.url + '/Employee/ByUserID/' + userId, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   AddEmployee(employee: Employee): Observable<Employee> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
     return this.http.post<Employee>(this.url + '/Employee', employee, { headers })
       .pipe(
         catchError(this.handleError)
@@ -68,7 +87,10 @@ export class EmployeeService {
   }
 
   EditEmployee(employee: Employee): Observable<Employee> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
     return this.http.put<Employee>(this.url + '/Employee', employee, { headers })
       .pipe(
         catchError(this.handleError)
@@ -76,8 +98,11 @@ export class EmployeeService {
   }
 
   DeleteEmployee(eid: number): Observable<{}> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.delete<Employee>(this.url + '/Employee/' + eid)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.delete<Employee>(this.url + '/Employee/' + eid, { headers })
       .pipe(
         catchError(this.handleError)
       );

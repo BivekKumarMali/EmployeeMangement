@@ -16,6 +16,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly AppDbContext _context;
@@ -44,12 +45,16 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 
         public async Task<IEnumerable<Employee>> Index()
         {
-            return await _employeeRepository.GetAllEmployees();
+            var list = await _employeeRepository.GetAllEmployees();
+            return list;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin, HR")]
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await _employeeRepository.GetAllEmployees();
+
+            var list = await _employeeRepository.GetAllEmployees();
+            return list;
         }
 
         [HttpGet("{Did}")]
@@ -62,6 +67,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 
         [HttpGet("{eid}")]
         [Route("ByEid/{eid}")]
+        [Authorize(Roles = "Admin, HR")]
         public Employee GetEmployeeByEid(int eid) 
         {
             return _employeeRepository.GetEmployeeById(eid);
@@ -74,6 +80,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, HR")]
         public async Task<IActionResult> AddEmployee(Employee employee)
         {
             employee.UserId = await _manager.AddUserManager(employee);
@@ -101,6 +108,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 
         
         [HttpDelete("{eid}")]
+        [Authorize(Roles = "Admin, HR")]
         public async Task<IActionResult> DeleteEmployee(int eid)
         {
             Employee employee = _employeeRepository.GetEmployeeById(eid);

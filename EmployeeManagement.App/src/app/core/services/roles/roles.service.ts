@@ -15,8 +15,8 @@ export class RolesService {
 
   ResetRoles(): Roles {
     return {
-      id: '',
-      name: ''
+      Id: '',
+      Name: ''
     };
   }
 

@@ -7,39 +7,39 @@
     <form #form="ngForm">
       <div class="form-group">
         <label for="name" class="control-label">Name</label>
-        <input type="text" class="form-control" name="name" id="name" [(ngModel)]="Employee.name" required />
+        <input type="text" class="form-control" name="name" id="name" [(ngModel)]="Employee.Name" required />
       </div>
       <div class="form-group">
         <label for="surname" class="control-label">Surname</label>
-        <input type="text" class="form-control" name="surname" id="surname" [(ngModel)]="Employee.surname" required />
+        <input type="text" class="form-control" name="surname" id="surname" [(ngModel)]="Employee.Surname" required />
       </div>
       <div class="form-group">
         <label for="address" class="control-label">Address</label>
-        <input type="text" class="form-control" name="address" id="address" [(ngModel)]="Employee.address" required />
+        <input type="text" class="form-control" name="address" id="address" [(ngModel)]="Employee.Address" required />
       </div>
       <div class="form-group">
         <label for="qualification" class="control-label">Qualification</label>
         <input type="text" class="form-control" name="qualification" id="qualification"
-          [(ngModel)]="Employee.qualification" required />
+          [(ngModel)]="Employee.Qualification" required />
       </div>
       <div class="form-group">
         <label for="contact Number" class="control-label">Contact Number</label>
         <input type="number" class="form-control" name="contact Number" id="contact Number"
-          [(ngModel)]="Employee.contactNumber" required />
+          [(ngModel)]="Employee.ContactNumber" required />
       </div>
       <div class="form-group">
         <label for="Department Name" class="control-label">Departments</label>
-        <select class="form-control" name="DepartmentName" id="Department Name" [(ngModel)]="Employee.did" required>
-          <option *ngFor="let department of Departments" [value]="department.did">
-            {{department.departmentName}}
+        <select class="form-control" name="DepartmentName" id="Department Name" [(ngModel)]="Employee.Did" required>
+          <option *ngFor="let department of Departments" [value]="department.Did">
+            {{department.DepartmentName}}
           </option>
         </select>
       </div>
       <div class="form-group">
         <label for="Roles" class="control-label">Roles</label>
-        <select class="form-control" name="roles" id="Roles" [(ngModel)]="Employee.roleId" required>
-          <option *ngFor="let role of Roles" [value]="role.id">
-            {{role.name}}
+        <select class="form-control" name="roles" id="Roles" [(ngModel)]="Employee.RoleId" required>
+          <option *ngFor="let role of Roles" [value]="role.Id">
+            {{role.Name}}
           </option>
         </select>
       </div>

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
 {
@@ -26,14 +28,23 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IPredefined _predefined; 
         private UserManager<IdentityUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public AccountController(IValidationRepository validation, IManager manager, IEmployeeRepository employeeRepository, IPredefined predefined, UserManager<IdentityUser> userManager)
+        public AccountController(
+            IValidationRepository validation,
+            IManager manager,
+            IEmployeeRepository employeeRepository,
+            IPredefined predefined,
+            UserManager<IdentityUser> userManager,
+            IConfiguration configuration
+            )
         {
             _validation = validation;
             _manager = manager;
             _employeeRepository = employeeRepository;
             _predefined = predefined;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
 
@@ -50,29 +61,40 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                         var user = await _manager.GetUserByEmail(logInViewModel.Email);
                         var employee = _employeeRepository.GetEmployeeByUserId(user.Id);
                         var role = await _userManager.GetRolesAsync(user);
-
-                        IdentityOptions _options = new IdentityOptions();
-
-                        var tokenDescriptor = new SecurityTokenDescriptor
+                        var authClaims = new List<Claim>
                         {
-                            Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim("UserID",user.Id.ToString()),
-                        new Claim("Did",employee.Did.ToString()),
-                        new Claim("Name",employee.Name.ToString()),
-                        new Claim(_options.ClaimsIdentity.RoleClaimType,role.FirstOrDefault())
-                    }),
-                            Expires = DateTime.UtcNow.AddMinutes(1),
+                            new Claim("name", user.UserName),
+                            new Claim("Did", employee.Did.ToString()),
+                            new Claim("UserID", employee.UserId.ToString()),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         };
-                        var tokenHandler = new JwtSecurityTokenHandler();
-                        var securityToken = tokenHandler.CreateToken(tokenDescriptor);
-                        var token = tokenHandler.WriteToken(securityToken);
-                        return Ok(new { token });
+
+                        foreach (var userRole in role)
+                        {
+                            authClaims.Add(new Claim("role", userRole));
+                            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                        }
+                        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+                        var token = new JwtSecurityToken(
+                            issuer: _configuration["JWT:ValidIssuer"],
+                            audience: _configuration["JWT:ValidAudience"],
+                            expires: DateTime.Now.AddHours(3),
+                            claims: authClaims,
+                            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                            );
+
+                        return Ok(new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo
+                        });
                     }
-                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
+                    return Unauthorized();
                 }
             }
-            return BadRequest(new { message = "Username or password is incorrect." });
+
+            return Unauthorized();
 
         }
 
