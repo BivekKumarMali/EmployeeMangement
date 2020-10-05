@@ -55,4 +55,11 @@ export class UtilityService {
       return payLoad.UserID;
     }
   }
+
+  JWTRoleExtractor(): string {
+    const payLoad = this.GetPayLoad();
+    if (payLoad != null) {
+      return payLoad.role;
+    }
+  }
 }

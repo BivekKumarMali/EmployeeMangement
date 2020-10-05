@@ -20,17 +20,20 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
     {
         private readonly IHubContext<SignalServer> _hub;
         private INotificationRepository _notificationRepository;
+        private readonly AppDbContext _context;
 
         public NotificationController(
             IHubContext<SignalServer> hub,
-            INotificationRepository notificationRepository
+            INotificationRepository notificationRepository,
+            AppDbContext context
             )
         {
             _hub = hub;
             _notificationRepository = notificationRepository;
+            _context = context;
         }
-        [HttpGet("{userID}")]
-        [Route("GetNotification/{userID}")]
+        [HttpGet]
+        [Route("GetNotification")]
         public IActionResult Get()
         {
             var result = Notification();
@@ -48,6 +51,13 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         {
             var newnid_userId = nid_userId.Split(" ");
             _notificationRepository.IsReadNotification(int.Parse(newnid_userId[0]), newnid_userId[1]);
+        }
+
+        [HttpGet("{userID}")]
+        [Route("GetIsRead/{userID}")]
+        public IEnumerable<IsRead> GetIsRead(string userID)
+        {
+            return _context.IsReads.ToList().Where(x => x.userId == userID);
         }
     }
 }

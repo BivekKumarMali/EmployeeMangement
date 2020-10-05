@@ -23,20 +23,7 @@ namespace EmployeeManagement.Web.Repository
 
         public IEnumerable<Notification> GetNotifications()
         {
-            var notifications = (from notification in _context.Notifications
-                                 join isread in _context.IsReads
-                                 on notification.nid equals isread.nid
-                                 select new Notification
-                                 {
-                                     nid = notification.nid,
-                                     action = notification.action,
-                                     date = notification.date,
-                                     did = notification.did,
-                                     name = notification.name,
-                                     isRead = isread
-
-                                 }).ToList();
-            return notifications;
+            return _context.Notifications.ToList();
         }
 
         public void SendNotification()

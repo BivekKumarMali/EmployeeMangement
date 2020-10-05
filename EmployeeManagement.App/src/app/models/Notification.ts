@@ -5,3 +5,9 @@ export interface NotificationDetails {
   action: string;
   did: number;
 }
+
+export interface IsRead {
+  nid: number;
+  rid: number;
+  userId: string;
+}

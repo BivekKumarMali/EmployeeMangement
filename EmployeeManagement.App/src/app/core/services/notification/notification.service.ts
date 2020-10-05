@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { IsRead } from 'src/app/models/Notification';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -20,6 +21,15 @@ export class NotificationService {
     const nid_userId = nid + ' ' + userId;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<string>(this.url + '/notification/' + nid_userId, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+
+  GetIsReadNotifications(userID: string): Observable<IsRead[]> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.get<IsRead[]>(this.url + '/Notification/GetIsRead/' + userID, { headers })
       .pipe(
         catchError(this.handleError)
       );

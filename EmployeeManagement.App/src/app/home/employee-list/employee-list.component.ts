@@ -12,13 +12,17 @@ export class EmployeeListComponent implements OnInit {
 
   employees: Employee[];
   errorMessage: any;
+  AdminHrService: boolean;
   constructor(
     private utilityService: UtilityService,
     private employeeService: EmployeeService
   ) { }
 
   ngOnInit(): void {
-    if (!this.utilityService.JWTCheckRoles(['Admin', 'HR'])) {
+    this.AdminHrService = this.utilityService.JWTCheckRoles(['Admin', 'HR']);
+    console.log(this.AdminHrService);
+
+    if (!this.AdminHrService) {
       const DepartmentID = this.utilityService.GetDepartmentID();
       this.employeeService.GetEmployeesByDepartment(DepartmentID).subscribe({
         next: employee => this.employees = employee,
