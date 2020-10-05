@@ -51,6 +51,14 @@ export class EmployeeService {
       );
   }
 
+
+  GetEmployeesByUserId(userId: string): Observable<Employee> {
+    return this.http.get<Employee>(this.url + '/Employee/ByUserID/' + userId)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   AddEmployee(employee: Employee): Observable<Employee> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<Employee>(this.url + '/Employee', employee, { headers })

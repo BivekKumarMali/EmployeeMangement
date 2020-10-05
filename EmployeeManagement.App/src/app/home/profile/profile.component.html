@@ -28,7 +28,7 @@
           [(ngModel)]="Employee.contactNumber" />
       </div>
     </form>
-    <form *ngIf="Edit">
+    <form *ngIf="Edit" #form="ngForm">
       <div class="form-group">
         <label for="name" class="control-label">Name</label>
         <input type="text" class="form-control" name="name" id="name" [(ngModel)]="Employee.name" />
@@ -52,7 +52,7 @@
           [(ngModel)]="Employee.contactNumber" />
       </div>
       <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" />
+        <input type="submit" (click)="EditEmployee()" class="btn btn-primary" [disabled]="!form.valid" />
       </div>
     </form>
   </div>

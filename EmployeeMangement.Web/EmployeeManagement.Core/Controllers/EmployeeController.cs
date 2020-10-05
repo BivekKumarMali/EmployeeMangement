@@ -66,6 +66,12 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         {
             return _employeeRepository.GetEmployeeById(eid);
         }
+        [HttpGet("{userId}")]
+        [Route("ByUserID/{userId}")]
+        public Employee GetEmployeeByEid(string userId) 
+        {
+            return _employeeRepository.GetEmployeeByUserId(userId);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddEmployee(Employee employee)
