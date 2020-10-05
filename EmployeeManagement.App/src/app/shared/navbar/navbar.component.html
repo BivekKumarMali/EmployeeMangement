@@ -24,7 +24,7 @@
             <a class="nav-link text-dark" [routerLink]="['/home/profile']"
               routerLinkActive="router-link-active">Profile</a>
           </li>
-          <li *ngIf="signalRService.data">
+          <li *ngIf="signalRService.data != null">
             <div class="dropdown">
               <button class="dropbtn">{{signalRService.data.length}}
                 <i class="fa fa-caret-down"></i>

@@ -33,7 +33,10 @@ export class ProfileComponent implements OnInit {
   EditEmployee() {
     this.employeeService.EditEmployee(this.Employee).subscribe({
       error: err => this.errorMessage = err,
-      complete: () => this.ngOnInit()
+      complete: () => {
+        this.EnableEdit();
+        this.ngOnInit();
+      }
     });
   }
 }
