@@ -66,6 +66,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                             new Claim("name", user.UserName),
                             new Claim("Did", employee.Did.ToString()),
                             new Claim("UserID", employee.UserId.ToString()),
+                            new Claim(ClaimTypes.Name, user.UserName),
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         };
 

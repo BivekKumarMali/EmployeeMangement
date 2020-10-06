@@ -22,21 +22,31 @@ export class RolesService {
 
 
   GetAllRoles(): Observable<Roles[]> {
-    return this.http.get<Roles[]>(this.url + '/Roles')
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
+    return this.http.get<Roles[]>(this.url + '/Roles', { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
 
   EditandAddRoles(roles: Roles): Observable<Roles> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
     return this.http.post<Roles>(this.url + '/Roles', roles, { headers })
       .pipe(
         catchError(this.handleError)
       );
   }
   DeleteRoles(id: string): Observable<{}> {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    });
     return this.http.delete<Roles>(this.url + '/Roles/' + id)
       .pipe(
         catchError(this.handleError)

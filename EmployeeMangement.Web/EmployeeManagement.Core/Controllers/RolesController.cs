@@ -17,7 +17,7 @@ namespace EmployeeManagement.Web.Controllers
     [ApiController]
     [Route("[controller]")]
     [EnableCors(origins: "*", headers: "*", methods: "*")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, HR")]
     public class RolesController : Controller
     {
         private readonly IManager _manager;
@@ -33,6 +33,7 @@ namespace EmployeeManagement.Web.Controllers
             return _manager.GetAllRoles();
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Add(IdentityRole identityRole)
         {
             identityRole.Name = identityRole.Name.Trim();
@@ -50,6 +51,7 @@ namespace EmployeeManagement.Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string id)
         {
             await _manager.DeleteRoleManager(id);

@@ -8,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SignalRService {
   url = environment.url;
-  public data: NotificationDetails[];
+  public data: any;
   private hubConnection: signalR.HubConnection;
   loginToken: string;
 
@@ -24,28 +24,10 @@ export class SignalRService {
   }
 
 
-  public addTransferChartDataListener = (isread: IsRead[], userId: string, role: string, did: number) => {
+  public addTransferChartDataListener = () => {
     this.hubConnection.on('transferchartdata', (data) => {
+      console.log(data);
       this.data = data;
-      this.SetNotification(isread, userId, role, did);
     });
-  }
-
-  SetNotification(isRead: IsRead[], userId: string, role: string, did: number) {
-    console.log(this.data, isRead, role);
-    this.data.reverse();
-    did = Number(did);
-    isRead.forEach(element => {
-      const index = this.data.findIndex(x => x.nid === element.nid);
-      this.RemoveIndex(index);
-    });
-    if (role !== 'Admin' && role !== 'HR') {
-      console.log(this.data[19].did, did);
-      this.data = this.data.filter(x => x.did === did);
-
-    }
-  }
-  RemoveIndex(index: number): void {
-    this.data.splice(index, 1);
   }
 }

@@ -52,15 +52,15 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             {
                 _departmentRepository.AddDepartment(department);
                 _notificationRepository.AddDepartmentNotification();
+                _notificationRepository.SendNotification("Added Department by Admin", null);
             }
             else
             {
                 _departmentRepository.UpdateDepartment(department);
                 _notificationRepository.EditDepartmentNotification();
-
+                _notificationRepository.SendNotification("Edited Department by Admin", null);
 
             }
-            _notificationRepository.SendNotification();
             return NoContent();
         }
 
@@ -73,7 +73,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
             _departmentRepository.DeleteDepartment(did);
             _notificationRepository.DeleteDepartmentNotification();
 
-            _notificationRepository.SendNotification();
+            _notificationRepository.SendNotification("Deleted Department by Admin", null);
 
             return RedirectToAction(nameof(Index));
         }

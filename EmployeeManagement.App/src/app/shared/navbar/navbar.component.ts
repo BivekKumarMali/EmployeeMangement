@@ -39,8 +39,8 @@ export class NavbarComponent implements OnInit {
     this.Did = this.utilityService.GetDepartmentID();
     this.hideRoles = this.utilityService.JWTCheckRoles(['Admin']);
     this.hideDepartment = this.utilityService.JWTCheckRoles(['Admin', 'HR']);
-    // this.startHttpRequest();
-    //this.signalRService.addTransferChartDataListener(this.isRead, this.UserID, this.Role, this.Did);
+    this.startHttpRequest();
+    this.signalRService.addTransferChartDataListener();
   }
   Logout() {
     localStorage.removeItem('token');
@@ -51,16 +51,6 @@ export class NavbarComponent implements OnInit {
       .subscribe(res => {
         console.log();
       });
-  }
-
-  ReaddNotifications(nid: number) {
-    const userId = this.utilityService.JwtUserIDExtractor();
-    const index = this.signalRService.data.findIndex(x => x.nid === nid);
-
-    this.notificationService.IsReadNotifications(nid, userId).subscribe({
-      error: err => this.errorMessage = err,
-      complete: () => this.signalRService.RemoveIndex(index)
-    });
   }
 
 

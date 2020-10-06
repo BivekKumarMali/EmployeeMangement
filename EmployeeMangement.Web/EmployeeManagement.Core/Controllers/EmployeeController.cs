@@ -90,7 +90,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 await _notificationRepository.AddEmployeeNotification(employee);
                 return NoContent();
             }
-            _notificationRepository.SendNotification();
+            _notificationRepository.SendNotification("Deleted Employee", employee.Did);
             return NoContent();
         }
 
@@ -102,7 +102,7 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
                 _employeeRepository.UpdateEmployee(employee);
                 await _notificationRepository.EditEmployeeNotification(employee);
             }
-            _notificationRepository.SendNotification();
+            _notificationRepository.SendNotification("Edit Employee", employee.Did);
             return NoContent();
         }
 
@@ -112,12 +112,13 @@ namespace EmployeeManagement.Web.EmployeeManagement.Core.Controllers
         public async Task<IActionResult> DeleteEmployee(int eid)
         {
             Employee employee = _employeeRepository.GetEmployeeById(eid);
+            int? Did = employee.Did;
             if (await _manager.DeleteUserManager(employee.UserId))
             {
                 _employeeRepository.DeleteEmployee(eid);
                 await _notificationRepository.DeleteEmployeeNotification(employee);
             }
-            _notificationRepository.SendNotification();
+            _notificationRepository.SendNotification("Deleted Employee", Did);
             return RedirectToAction(nameof(Index));
         }
 

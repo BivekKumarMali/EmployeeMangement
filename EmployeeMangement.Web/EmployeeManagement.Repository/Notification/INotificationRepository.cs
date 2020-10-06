@@ -9,7 +9,7 @@ namespace EmployeeManagement.Web.Repository
     public interface INotificationRepository
     {
         IEnumerable<Notification> GetNotifications();
-        void SendNotification();
+        void SendNotification(string message, int? Did);
 
 
         Task AddDepartmentNotification();

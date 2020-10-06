@@ -26,10 +26,23 @@ namespace EmployeeManagement.Web.Repository
             return _context.Notifications.ToList();
         }
 
-        public void SendNotification()
+        public void SendNotification(string message, int? Did)
         {
-            var result = GetNotifications();
-            _hubContext.Clients.All.SendAsync("transferchartdata", result);
+            var section = message.Split(" ");
+            if (section[1] == "Department")
+            {
+                var groups = "HR";
+                _hubContext.Clients.Group(groups).SendAsync("transferchartdata", message);
+            }
+            else
+            {
+                string grp1 = "Admin";
+                string grp2 = "HR";
+                string grp3 = "Employee" + Did;
+
+                _hubContext.Clients.Groups(grp1, grp2, grp3).SendAsync("transferchartdata", message);
+                
+            }
         }
         public async Task AddDepartmentNotification()
         {

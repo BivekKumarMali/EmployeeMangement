@@ -26,12 +26,11 @@
           </li>
           <li *ngIf="signalRService.data != null">
             <div class="dropdown">
-              <button class="dropbtn">{{signalRService.data.length}}
+              <button class="dropbtn">Notification
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-content">
-                <a *ngFor="let data of signalRService.data" (click)="ReaddNotifications(data.nid)">{{data.action}} by
-                  {{data.name}} on {{data.date}}</a>
+                <a>{{signalRService.data}}</a>
               </div>
             </div>
           </li>
